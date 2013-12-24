@@ -1,0 +1,38 @@
+package im.dadoo.price.spider.parser;
+
+import java.io.IOException;
+
+
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+import org.springframework.stereotype.Component;
+
+@Component
+public class YixunParser extends Parser {
+	
+	public Fruit parse(String url) throws IOException {
+		Document doc = Jsoup.connect(url).userAgent("").cookie("wsid", "2001").timeout(Parser.TIME_OUT).get();
+		Elements es = doc.select("#sea_notify");
+		Fruit fruit = new Fruit();
+		if (es != null) {
+			fruit.setStock(0);
+		} else {
+			fruit.setStock(1);
+		}
+		es = doc.select(".xprice_val");
+		List<Double> prices = new ArrayList<Double>();
+		for (Element e : es) {
+			prices.add(Double.parseDouble(e.text().substring(1)));
+		}
+		fruit.setValue(Collections.min(prices));
+		return fruit;
+	}
+
+}
