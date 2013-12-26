@@ -20,14 +20,14 @@ public class AmazonCnParser extends Parser {
 	private static final Logger logger = LoggerFactory.getLogger(AmazonCnParser.class);
 	
 	public Fruit parse(String url) throws IOException {
-		Fruit fruit = null;
+		Fruit fruit = new Fruit();
 		Document doc = Jsoup.connect(url).timeout(Parser.TIME_OUT).get();
 		Elements es = doc.select("#actualPriceValue .priceLarge");
 		if (es.first() != null) {
 			String html = es.first().text();
 			if (html != null && !html.equals("")) {
 				Double value = Double.parseDouble(html.substring(2));
-				fruit = new Fruit(value);
+				fruit.setValue(value);
 			}
 		} else {
 			HttpGet httpGet = new HttpGet(url);
@@ -36,10 +36,13 @@ public class AmazonCnParser extends Parser {
 			String fragment = EntityUtils.toString(entity);
 			doc = Jsoup.parseBodyFragment(fragment);
 			es = doc.select(".ddm-sbr-avail-title");
-			if (es.text().equals("缺货登记")) {
+			if (es.text() != null && es.text().equals("缺货登记")) {
 				logger.info(String.format("缺货:%s", url));
 				fruit = new Fruit(null, 0);
-			}
+			} else {
+        logger.error(String.format("url:%s,%s", url, Parser.Log_PARSE_STOCK_FAIL));
+        this.sendFailureLog(url, "AmazonCnParser", Parser.Log_PARSE_STOCK_FAIL);
+      }
 		}
 		return fruit;
 	}

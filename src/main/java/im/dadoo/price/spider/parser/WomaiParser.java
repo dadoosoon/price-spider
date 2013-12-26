@@ -16,7 +16,7 @@ public class WomaiParser extends Parser {
 	public static String URL = "http://price.womai.com/PriceServer/open/productlist.do?ids=%s&prices=buyPrice";
 	
 	public Fruit parse(String url) throws IOException {
-		Fruit fruit = null;
+		Fruit fruit = new Fruit();
 		Integer endIndex = url.indexOf(".htm");
 		Integer beginIndex = endIndex - 6;
 		String ids = url.substring(beginIndex, endIndex);
@@ -27,20 +27,23 @@ public class WomaiParser extends Parser {
 
 		//首先判断是否有货
 		if (json.indexOf("\"sellable\":true") > -1) {
-			fruit = new Fruit();
 			fruit.setStock(1);
 		} else if (json.indexOf("\"sellable\":false") > -1){
-			fruit = new Fruit();
 			fruit.setStock(0);
 		} else {
-			return null;
+			logger.error("url:%s,%s", url, Parser.Log_PARSE_STOCK_FAIL);
+      this.sendFailureLog(url, "WomaiParser", Parser.Log_PARSE_STOCK_FAIL);
 		}
 		Integer index1 = json.indexOf(PREFIX) + PREFIX.length();
 		Integer index2 = json.substring(index1).indexOf("\"");
 		String result = json.substring(index1, index1 + index2);
-		
-		Double value = Double.parseDouble(result);
-		fruit.setValue(value);
+		if (result != null && !result.equals("")) {
+      Double value = Double.parseDouble(result);
+      fruit.setValue(value);  
+    } else {
+      logger.error("url:%s,%s", url, Parser.Log_PARSE_VALUE_FAIL);
+      this.sendFailureLog(url, "WomaiParser", Parser.Log_PARSE_VALUE_FAIL);
+    }
 		return fruit;
 	}
 

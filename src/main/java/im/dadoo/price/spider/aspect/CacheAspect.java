@@ -22,7 +22,7 @@ public class CacheAspect {
 	
 	@AfterReturning(value = "execution(public * im.dadoo.price.core.service.PriceService.save(..)) ", 
 			returning="price")
-	public void setLatest(Price price) {
+	public void updateCache(Price price) {
 		CachePrice cp = this.cachePriceService.set(price);
 		logger.info(String.format("记录到cache成功,内容为%s", cp));
 	}

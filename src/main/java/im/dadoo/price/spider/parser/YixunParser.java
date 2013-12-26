@@ -27,11 +27,17 @@ public class YixunParser extends Parser {
 			fruit.setStock(1);
 		}
 		es = doc.select(".xprice_val");
-		List<Double> prices = new ArrayList<Double>();
-		for (Element e : es) {
-			prices.add(Double.parseDouble(e.text().substring(1)));
-		}
-		fruit.setValue(Collections.min(prices));
+    if (es.first() != null) {
+      List<Double> prices = new ArrayList<Double>();
+      for (Element e : es) {
+        prices.add(Double.parseDouble(e.text().substring(1)));
+      }
+      fruit.setValue(Collections.min(prices));
+    } else {
+      logger.error("url:%s,%s", url, Parser.Log_PARSE_VALUE_FAIL);
+      this.sendFailureLog(url, "YixunParser", Parser.Log_PARSE_VALUE_FAIL);
+    }
+		
 		return fruit;
 	}
 

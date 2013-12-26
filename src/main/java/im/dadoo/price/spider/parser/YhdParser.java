@@ -2,9 +2,6 @@ package im.dadoo.price.spider.parser;
 
 import java.io.IOException;
 
-
-
-
 import java.net.URL;
 import java.util.Map;
 
@@ -21,7 +18,7 @@ public class YhdParser extends Parser {
 	private ObjectMapper mapper;
 	
 	public Fruit parse(String url) throws IOException {
-		Fruit fruit = null;
+		Fruit fruit = new Fruit();
 		String[] ts = url.split("/");
 		
 		String pid = ts[ts.length - 1];
@@ -29,23 +26,26 @@ public class YhdParser extends Parser {
 		
 		//首先判断是否有货
 		if (map.containsKey("canSale")) {
-			fruit = new Fruit();
 			if ((Integer)map.get("canSale") == 0) {
 				fruit.setStock(0);
 			} else {
 				fruit.setStock(1);
 			}
 		} else {
-			return null;
+      logger.error("url:%s,%s", url, Parser.Log_PARSE_STOCK_FAIL);
+      this.sendFailureLog(url, "YhdParser", Parser.Log_PARSE_STOCK_FAIL);
 		}
 		if (map.containsKey("currentPrice")) {
 			Double value = null;
 			Object rawValue = map.get("currentPrice");
 			if (rawValue.getClass().equals(Integer.class)) {
 				value = (Integer)rawValue * 1.0;
-			} else {
+			} else if (rawValue.getClass().equals(Double.class)) {
 				value = (Double)rawValue;
-			}
+			} else {
+        logger.error("url:%s,%s", url, Parser.Log_PARSE_VALUE_FAIL);
+        this.sendFailureLog(url, "YhdParser", Parser.Log_PARSE_VALUE_FAIL);
+      }
 			fruit.setValue(value);
 		}
 		return fruit;

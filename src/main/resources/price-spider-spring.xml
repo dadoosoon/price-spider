@@ -51,11 +51,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   <tx:annotation-driven transaction-manager="transactionManager" />
   
   <!-- 日志客户端配置 -->
-  <bean id="loggerClient" class="im.dadoo.logger.client.LoggerClient">
-    <constructor-arg type="java.lang.String">
-      <value>http://logs.dadoo.im/log</value>
-    </constructor-arg>
-  </bean>
+  <bean id="loggerClient" class="im.dadoo.logger.client.impl.JmsLoggerClient" />
   
   <!-- 缓存配置 -->
   <bean id="redisCache" class="im.dadoo.price.cache.impl.RedisCache">

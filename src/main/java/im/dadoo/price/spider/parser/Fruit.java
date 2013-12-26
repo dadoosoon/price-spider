@@ -6,7 +6,10 @@ public class Fruit {
 	
 	private Integer stock;
 	
-	public Fruit() {}
+	public Fruit() {
+    this.value = null;
+    this.stock = null;
+  }
 	
 	public Fruit(Double value) {
 		this.value = value;
@@ -18,8 +21,9 @@ public class Fruit {
 		this.stock = stock;
 	}
 
+  @Override
 	public String toString() {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		sb.append("{");
 		sb.append("value:").append(value).append(",");
 		sb.append("stock:").append(stock);

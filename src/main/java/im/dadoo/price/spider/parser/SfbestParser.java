@@ -27,7 +27,7 @@ public class SfbestParser extends Parser {
 	private static final String STOCK_URL = "http://www.sfbest.com/product/stock";
 	
 	public Fruit parse(String url) throws IOException {
-		Fruit fruit = null;
+		Fruit fruit = new Fruit();
 		String[] ts = url.split("/");
 		String pid = ts[ts.length - 1].split("\\.")[0];
 		//首先判断是否有货
@@ -38,13 +38,18 @@ public class SfbestParser extends Parser {
 		CloseableHttpResponse res = Parser.httpclient.execute(httpPost);
 		HttpEntity entity = res.getEntity();
 		String fragment = EntityUtils.toString(entity);
-		if (fragment.indexOf("现货") > -1) {
-			fruit = new Fruit();
-			fruit.setStock(1);
-		} else {
-			fruit = new Fruit();
-			fruit.setStock(0);
-		}
+    //若fragment为null证明获取库存方式已失效
+    if (fragment != null) {
+      if (fragment.indexOf("现货") > -1) {
+        fruit.setStock(1);
+      } else {
+        fruit.setStock(0);
+      }
+    } else {
+      logger.error("url:%s,%s", url, Parser.Log_PARSE_STOCK_FAIL);
+      this.sendFailureLog(url, "SfbestParser", Parser.Log_PARSE_STOCK_FAIL);
+    }
+		
 		
 		//然后解析价格
 		httpPost = new HttpPost(PRICE_URL);
@@ -56,12 +61,17 @@ public class SfbestParser extends Parser {
 		fragment = EntityUtils.toString(entity);
 		Document doc = Jsoup.parseBodyFragment(fragment);
 		Elements es = doc.select("#price font");
-		String html = es.first().text();
+    if (es.first() != null) {
+      String html = es.first().text();
+      if (html != null && !html.equals("")) {
+        Double value = Double.parseDouble(html);
+        fruit.setValue(value);
+      }
+    } else {
+      logger.error("url:%s,%s", url, Parser.Log_PARSE_VALUE_FAIL);
+      this.sendFailureLog(url, "SfbestParser", Parser.Log_PARSE_VALUE_FAIL);
+    }
 		
-		if (html != null && !html.equals("")) {
-			Double value = Double.parseDouble(html);
-			fruit.setValue(value);
-		}
 		return fruit;
 	}
 

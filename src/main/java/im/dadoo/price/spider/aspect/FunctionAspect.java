@@ -1,7 +1,7 @@
 package im.dadoo.price.spider.aspect;
 
-import im.dadoo.logger.client.DadooLog;
-import im.dadoo.logger.client.LogCreator;
+import im.dadoo.log.Log;
+import im.dadoo.log.LogMaker;
 import im.dadoo.logger.client.LoggerClient;
 import im.dadoo.price.spider.cons.Constants;
 
@@ -32,7 +32,7 @@ public class FunctionAspect {
 		Object[] args = pjp.getArgs();
 		
 		//发送到日志服务器
-		DadooLog log = LogCreator.createFunLog(Constants.SERVICE_NAME, sig, args, ret, t2 - t1);
+		Log log = LogMaker.makeFunctionLog(Constants.SERVICE_NAME, sig, args, ret, t2 - t1);
 		this.loggerClient.send(log);
 		
 		logger.info("函数信息:{}~~参数值:{}~~返回值:{}~~运行时间:{}", sig, args, ret, t2 - t1);

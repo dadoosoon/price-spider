@@ -1,10 +1,10 @@
 package im.dadoo.price.spider.spider;
 
+import im.dadoo.log.Log;
+import im.dadoo.log.LogMaker;
 import java.util.ArrayList;
 import java.util.List;
 
-import im.dadoo.logger.client.DadooLog;
-import im.dadoo.logger.client.LogCreator;
 import im.dadoo.logger.client.LoggerClient;
 import im.dadoo.price.core.domain.Link;
 import im.dadoo.price.core.domain.Price;
@@ -70,6 +70,7 @@ public class Spider {
 	
 	public void start() {
 		List<Link> links = this.linkService.list();
+    //乱序采集
 		links = this.disorderLinks(links);
 		for (Link link : links) {
 			Parser parser = this.choose(link.getSeller());
@@ -85,7 +86,8 @@ public class Spider {
 						if (fruit.getValue() != null) {
 							value = fruit.getValue() / link.getAmount();
 						}
-						Price price = this.priceService.save(link, value, fruit.getStock());
+						//Price price = this.priceService.save(link, value, fruit.getStock());
+            Price price = Price.create(fruit.getValue(), fruit.getStock(), System.currentTimeMillis(), link);
 						Long time = System.currentTimeMillis() - t1;
 						logger.info(String.format("采集%s网站结束,商品名为%s,单价为%2.2f,库存状况%d,共耗时%d毫秒", 
 								link.getSeller().getName(), link.getProduct().getName(), value, fruit.getStock(), time));
@@ -96,9 +98,8 @@ public class Spider {
 					String description = String.format("采集%s网站结束,商品名为%s,价格解析失败,共耗时%d毫秒", 
 							link.getSeller().getName(), link.getProduct().getName(), t2 - t1);
 					logger.error(description);
-					DadooLog log = LogCreator.createExceptionLog(Constants.SERVICE_NAME, description, e1);
+					Log log = LogMaker.makeExceptionLog(Constants.SERVICE_NAME, description, e1);
 					this.loggerClient.send(log);
-					e1.printStackTrace();
 				} 
 			}
 		}

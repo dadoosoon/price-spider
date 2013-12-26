@@ -1,6 +1,6 @@
 package im.dadoo.price.spider.parser;
 
-import im.dadoo.logger.client.DadooLog;
+import im.dadoo.log.Log;
 import im.dadoo.logger.client.LoggerClient;
 import im.dadoo.price.core.domain.Price;
 import im.dadoo.price.spider.cons.Constants;
@@ -25,6 +25,10 @@ public abstract class Parser {
 	public static final String PRICE = "price";
 	public static final String TIME = "time";
 	
+  public static final String Log_PARSE_VALUE_FAIL = "解析价格失败,可能页面已被修改";
+  
+  public static final String Log_PARSE_STOCK_FAIL = "解析库存失败,可能页面已被修改";
+  
 	@Autowired
 	protected LoggerClient loggerClient;
 	
@@ -36,9 +40,18 @@ public abstract class Parser {
 		Map<String, Object> content = new HashMap<String, Object>();
 		content.put(Parser.PRICE, price);
 		content.put(Parser.TIME, time);
-		DadooLog log = new DadooLog(Constants.SERVICE_NAME, 
+		Log log = new Log(Constants.SERVICE_NAME, 
 				Constants.TYPE_EXTRACTION, System.currentTimeMillis(), content);
 		this.loggerClient.send(log);
 	}
   
+  public void sendFailureLog(String url, String parserName, String description) {
+    Map<String, Object> content = new HashMap<String, Object>();
+    content.put("url", url);
+    content.put("parserName", parserName);
+    content.put("description", description);
+    Log log = new Log(Constants.SERVICE_NAME, Constants.TYPE_PARSE_FAIL, 
+            System.currentTimeMillis(), content);
+    this.loggerClient.send(log);
+  }
 }
