@@ -38,7 +38,7 @@ public class DangdangParser extends Parser {
         fruit.setStock(0);
       }
     }
-		
+		res.close();
 		//接下来解析价格
 		Document doc = Jsoup.connect(url).timeout(Parser.TIME_OUT).get();
 		Elements es = doc.select("#salePriceTag");

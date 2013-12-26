@@ -49,7 +49,7 @@ public class SfbestParser extends Parser {
       logger.error("url:%s,%s", url, Parser.Log_PARSE_STOCK_FAIL);
       this.sendFailureLog(url, "SfbestParser", Parser.Log_PARSE_STOCK_FAIL);
     }
-		
+		res.close();
 		
 		//然后解析价格
 		httpPost = new HttpPost(PRICE_URL);
@@ -71,7 +71,7 @@ public class SfbestParser extends Parser {
       logger.error("url:%s,%s", url, Parser.Log_PARSE_VALUE_FAIL);
       this.sendFailureLog(url, "SfbestParser", Parser.Log_PARSE_VALUE_FAIL);
     }
-		
+		res.close();
 		return fruit;
 	}
 

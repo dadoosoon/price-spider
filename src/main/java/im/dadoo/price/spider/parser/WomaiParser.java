@@ -24,7 +24,7 @@ public class WomaiParser extends Parser {
 		CloseableHttpResponse res = Parser.httpclient.execute(httpGet);
 		HttpEntity entity = res.getEntity();
 		String json = EntityUtils.toString(entity);
-
+    res.close();
 		//首先判断是否有货
 		if (json.indexOf("\"sellable\":true") > -1) {
 			fruit.setStock(1);

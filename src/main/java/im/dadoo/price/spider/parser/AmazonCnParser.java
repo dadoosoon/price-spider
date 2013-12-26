@@ -17,8 +17,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class AmazonCnParser extends Parser {
 	
-	private static final Logger logger = LoggerFactory.getLogger(AmazonCnParser.class);
-	
 	public Fruit parse(String url) throws IOException {
 		Fruit fruit = new Fruit();
 		Document doc = Jsoup.connect(url).timeout(Parser.TIME_OUT).get();
@@ -43,6 +41,7 @@ public class AmazonCnParser extends Parser {
         logger.error(String.format("url:%s,%s", url, Parser.Log_PARSE_STOCK_FAIL));
         this.sendFailureLog(url, "AmazonCnParser", Parser.Log_PARSE_STOCK_FAIL);
       }
+      res.close();
 		}
 		return fruit;
 	}

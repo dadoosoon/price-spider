@@ -86,8 +86,8 @@ public class Spider {
 						if (fruit.getValue() != null) {
 							value = fruit.getValue() / link.getAmount();
 						}
-						//Price price = this.priceService.save(link, value, fruit.getStock());
-            Price price = Price.create(fruit.getValue(), fruit.getStock(), System.currentTimeMillis(), link);
+						Price price = this.priceService.save(link, value, fruit.getStock());
+            //Price price = Price.create(fruit.getValue(), fruit.getStock(), System.currentTimeMillis(), link);
 						Long time = System.currentTimeMillis() - t1;
 						logger.info(String.format("采集%s网站结束,商品名为%s,单价为%2.2f,库存状况%d,共耗时%d毫秒", 
 								link.getSeller().getName(), link.getProduct().getName(), value, fruit.getStock(), time));
