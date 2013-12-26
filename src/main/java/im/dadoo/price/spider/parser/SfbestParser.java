@@ -64,7 +64,7 @@ public class SfbestParser extends Parser {
     if (es.first() != null) {
       String html = es.first().text();
       if (html != null && !html.equals("")) {
-        Double value = Double.parseDouble(html);
+        Double value = this.parserValue(html);
         fruit.setValue(value);
       }
     } else {

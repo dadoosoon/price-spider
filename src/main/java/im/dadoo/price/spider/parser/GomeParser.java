@@ -21,7 +21,7 @@ public class GomeParser extends Parser {
 		Integer index2 = html.substring(index1).indexOf("\"");
 		String result = html.substring(index1, index1 + index2);
 		
-		Double value = Double.parseDouble(result);
+    Double value = this.parserValue(result);
 		fruit.setValue(value);
 		fruit.setStock(1);
 		return fruit;

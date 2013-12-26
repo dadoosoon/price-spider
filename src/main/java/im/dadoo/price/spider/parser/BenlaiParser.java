@@ -19,12 +19,13 @@ public class BenlaiParser extends Parser{
 		} 
 		String html = es.first().ownText();
 		
-		Fruit fruit = null;
+		Fruit fruit = new Fruit();
 		if (html != null) {
-			Double value = Double.parseDouble(html.substring(1));
-			fruit = new Fruit(value);
+      Double value = this.parserValue(html.substring(1));
+			fruit.setValue(value);
+      fruit.setStock(1);
 		} else {
-			fruit = new Fruit(null, 0);
+      fruit.setStock(0);
 		}
 		return fruit;
 	}

@@ -36,6 +36,14 @@ public abstract class Parser {
 	
 	public abstract Fruit parse(String url) throws IOException;
 	
+  protected Double parserValue(String html) {
+    Double value = null;
+    try {
+      value = Double.parseDouble(html);
+    } catch(NumberFormatException e) {}
+    return value;
+  }
+  
 	public void sendExtractionLog(Price price, Long time) {
 		Map<String, Object> content = new HashMap<String, Object>();
 		content.put(Parser.PRICE, price);

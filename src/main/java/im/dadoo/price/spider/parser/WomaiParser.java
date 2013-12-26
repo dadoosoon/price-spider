@@ -38,7 +38,7 @@ public class WomaiParser extends Parser {
 		Integer index2 = json.substring(index1).indexOf("\"");
 		String result = json.substring(index1, index1 + index2);
 		if (result != null && !result.equals("")) {
-      Double value = Double.parseDouble(result);
+      Double value = this.parserValue(result);
       fruit.setValue(value);  
     } else {
       logger.error("url:%s,%s", url, Parser.Log_PARSE_VALUE_FAIL);

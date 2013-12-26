@@ -30,7 +30,8 @@ public class YixunParser extends Parser {
     if (es.first() != null) {
       List<Double> prices = new ArrayList<Double>();
       for (Element e : es) {
-        prices.add(Double.parseDouble(e.text().substring(1)));
+        Double value = this.parserValue(e.text().substring(1));
+        prices.add(value);
       }
       fruit.setValue(Collections.min(prices));
     } else {

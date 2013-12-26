@@ -47,10 +47,10 @@ public class DangdangParser extends Parser {
 		if (html != null && !html.equals("")) {
 			Double value = null;
 			if (Character.isDigit(html.charAt(0))) {
-				value = Double.parseDouble(html);
+        value = this.parserValue(html);
 			}
 			else {
-				value = Double.parseDouble(html.substring(1));
+        value = this.parserValue(html.substring(1));
 			}
 			fruit.setValue(value);
 		} else {

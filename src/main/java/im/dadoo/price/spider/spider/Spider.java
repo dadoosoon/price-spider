@@ -95,8 +95,8 @@ public class Spider {
 					}
 				} catch(Exception e1) {
 					Long t2 = System.currentTimeMillis();
-					String description = String.format("采集%s网站结束,商品名为%s,价格解析失败,共耗时%d毫秒", 
-							link.getSeller().getName(), link.getProduct().getName(), t2 - t1);
+					String description = String.format("采集%s结束,商品名为%s,价格解析失败,共耗时%d毫秒", 
+							link.getUrl(), link.getProduct().getName(), t2 - t1);
 					logger.error(description);
 					Log log = LogMaker.makeExceptionLog(Constants.SERVICE_NAME, description, e1);
 					this.loggerClient.send(log);

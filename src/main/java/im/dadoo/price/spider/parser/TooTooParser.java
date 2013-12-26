@@ -18,7 +18,7 @@ public class TooTooParser extends Parser {
 		Elements es = doc.select(".cuxiaojia span");
 		String html = es.first().ownText();
 		if (html != null) {
-			Double value = Double.parseDouble(html.substring(1));
+      Double value = this.parserValue(html.substring(1));
 			fruit.setValue(value);
 		} else {
 			fruit.setValue(null);

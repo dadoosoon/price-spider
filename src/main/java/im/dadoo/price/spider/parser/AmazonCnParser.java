@@ -22,7 +22,7 @@ public class AmazonCnParser extends Parser {
 		if (es.first() != null) {
 			String html = es.first().text();
 			if (html != null && !html.equals("")) {
-				Double value = Double.parseDouble(html.substring(2));
+        Double value = this.parserValue(html.substring(2));
 				fruit.setValue(value);
 			}
 		} else {

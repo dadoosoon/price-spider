@@ -38,7 +38,7 @@ public class JdParser extends Parser {
     if (es.get(1) != null) {
       html = es.get(1).text();
       if (html != null && !html.equals("")) {
-        Double value = Double.parseDouble(html.substring(6));
+        Double value = this.parserValue(html.substring(6));
         fruit.setValue(value);
       }
       else {
