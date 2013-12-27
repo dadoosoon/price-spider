@@ -12,14 +12,14 @@ public class BenlaiParser extends Parser{
 
 	@Override
 	public Fruit parse(String url) throws IOException {
+    Fruit fruit = new Fruit();
 		Document doc = Jsoup.connect(url).timeout(Parser.TIME_OUT).get();
 		Elements es = doc.select(".newprice span");
 		if (es.first() == null) {
-			return new Fruit(null, 0);
+			return fruit;
 		} 
 		String html = es.first().ownText();
 		
-		Fruit fruit = new Fruit();
 		if (html != null) {
       Double value = this.parserValue(html.substring(1));
 			fruit.setValue(value);

@@ -34,7 +34,7 @@ public class AmazonCnParser extends Parser {
 			es = doc.select(".ddm-sbr-avail-title");
 			if (es.text() != null && es.text().equals("缺货登记")) {
 				logger.info(String.format("缺货:%s", url));
-				fruit = new Fruit(null, 0);
+				fruit.setStock(0);
 			} else {
         logger.error(String.format("url:%s,%s", url, Parser.Log_PARSE_STOCK_FAIL));
         this.sendFailureLog(url, "AmazonCnParser", Parser.Log_PARSE_STOCK_FAIL);

@@ -8,7 +8,7 @@ public class Fruit {
 	
 	public Fruit() {
     this.value = null;
-    this.stock = null;
+    this.stock = 0;
   }
 	
 	public Fruit(Double value) {

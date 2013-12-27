@@ -1,4 +1,4 @@
-package im.dadoo.price.spider;
+package im.dadoo.price.spider.boot;
 
 
 import im.dadoo.price.spider.parser.DangdangParser;
