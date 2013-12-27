@@ -98,6 +98,7 @@ public class Spider {
 					String description = String.format("采集%s结束,商品名为%s,价格解析失败,共耗时%d毫秒", 
 							link.getUrl(), link.getProduct().getName(), t2 - t1);
 					logger.error(description);
+          e1.printStackTrace();
 					Log log = LogMaker.makeExceptionLog(Constants.SERVICE_NAME, description, e1);
 					this.loggerClient.send(log);
 				} 
