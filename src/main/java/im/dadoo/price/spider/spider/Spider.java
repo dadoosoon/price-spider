@@ -6,11 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import im.dadoo.logger.client.LoggerClient;
-import im.dadoo.price.core.domain.Link;
-import im.dadoo.price.core.domain.Price;
-import im.dadoo.price.core.domain.Seller;
-import im.dadoo.price.core.service.LinkService;
-import im.dadoo.price.core.service.PriceService;
+import im.dadoo.price.domain.Link;
+import im.dadoo.price.domain.Price;
+import im.dadoo.price.domain.Seller;
+import im.dadoo.price.service.LinkService;
+import im.dadoo.price.service.PriceService;
 import im.dadoo.price.spider.cons.Constants;
 import im.dadoo.price.spider.parser.Fruit;
 import im.dadoo.price.spider.parser.Parser;
@@ -54,9 +54,6 @@ public class Spider {
 	private Parser yixunParser;
 	
 	@Autowired
-	private Parser suningParser;
-	
-	@Autowired
 	private Parser gomeParser;
 	
 	@Autowired
@@ -86,7 +83,7 @@ public class Spider {
 						if (fruit.getValue() != null) {
 							value = fruit.getValue() / link.getAmount();
 						}
-						Price price = this.priceService.save(link, value, fruit.getStock());
+						Price price = this.priceService.save(value, fruit.getStock(), link);
             //Price price = Price.create(fruit.getValue(), fruit.getStock(), System.currentTimeMillis(), link);
 						Long time = System.currentTimeMillis() - t1;
 						logger.info(String.format("采集%s网站结束,商品名为%s,单价为%2.2f,库存状况%d,共耗时%d毫秒", 
@@ -119,9 +116,6 @@ public class Spider {
 			return this.yixunParser;
 		} else if (seller.getName().equals("中粮我买网")) {
 			return this.womaiParser;
-		} else if (seller.getName().equals("苏宁易购")) {
-			//return this.suningParser;
-			return null;
 		} else if (seller.getName().equals("国美在线")) {
 			return this.gomeParser;
 		} else if (seller.getName().equals("当当")) {

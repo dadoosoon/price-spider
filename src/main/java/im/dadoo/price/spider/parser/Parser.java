@@ -2,7 +2,7 @@ package im.dadoo.price.spider.parser;
 
 import im.dadoo.log.Log;
 import im.dadoo.logger.client.LoggerClient;
-import im.dadoo.price.core.domain.Price;
+import im.dadoo.price.domain.Price;
 import im.dadoo.price.spider.cons.Constants;
 
 import java.io.IOException;
@@ -20,7 +20,7 @@ public abstract class Parser {
 	protected static final Logger logger = LoggerFactory.getLogger(Parser.class);
 	
 	public static final Integer PERIOD = 900000;
-	public static final Integer TIME_OUT = PERIOD / 2;
+	public static final Integer TIME_OUT = 60000;
 	
 	public static final String PRICE = "price";
 	public static final String TIME = "time";

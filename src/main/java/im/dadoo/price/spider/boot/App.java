@@ -18,7 +18,7 @@ public class App {
   	timer.schedule(new TimerTask() {
   		
    		private final ApplicationContext ctx = new ClassPathXmlApplicationContext(
-              new String[]{"price-spider-spring.xml", "logger-client-context.xml"});
+              new String[]{"price-spider-context.xml", "logger-client-context.xml"});
     	private final Spider spider = (Spider) ctx.getBean("spider");
     	
 			@Override
