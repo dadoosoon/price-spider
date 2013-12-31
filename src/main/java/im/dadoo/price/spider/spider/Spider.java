@@ -77,23 +77,22 @@ public class Spider {
 				Long t1 = System.currentTimeMillis();
 				try {
 					Fruit fruit = parser.parse(link.getUrl());
-					
+					Long t2 = System.currentTimeMillis();
 					if (fruit != null) {
 						Double value = null;
 						if (fruit.getValue() != null) {
 							value = fruit.getValue() / link.getAmount();
 						}
 						Price price = this.priceService.save(value, fruit.getStock(), link);
-            //Price price = Price.create(fruit.getValue(), fruit.getStock(), System.currentTimeMillis(), link);
-						Long time = System.currentTimeMillis() - t1;
-						logger.info(String.format("采集%s网站结束,商品名为%s,单价为%2.2f,库存状况%d,共耗时%d毫秒", 
-								link.getSeller().getName(), link.getProduct().getName(), value, fruit.getStock(), time));
-						parser.sendExtractionLog(price, time);
+						Long t3 = System.currentTimeMillis();
+						logger.info(String.format("采集%s网站结束,商品名为%s,单价为%2.2f,库存状况%d,采集耗时%d毫秒,存储耗时%d毫秒", 
+								link.getSeller().getName(), link.getProduct().getName(), value, fruit.getStock(), t2 - t1, t3 - t2));
+						parser.sendExtractionLog(price, t3 - t1);
 					}
 				} catch(Exception e1) {
-					Long t2 = System.currentTimeMillis();
+					Long t4 = System.currentTimeMillis();
 					String description = String.format("采集%s结束,商品名为%s,价格解析失败,共耗时%d毫秒", 
-							link.getUrl(), link.getProduct().getName(), t2 - t1);
+							link.getUrl(), link.getProduct().getName(), t4 - t1);
 					logger.error(description);
           e1.printStackTrace();
 					Log log = LogMaker.makeExceptionLog(Constants.SERVICE_NAME, description, e1);
