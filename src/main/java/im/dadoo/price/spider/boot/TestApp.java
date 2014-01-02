@@ -21,7 +21,10 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class TestApp {
 
 	public static void main(String[] args) throws IOException {
-		System.out.println(ObjectUtils.compare(null, 1.00));
+		ApplicationContext ctx = new ClassPathXmlApplicationContext(
+              new String[]{"price-spider-context.xml", "logger-client-context.xml"});
+    Parser parser = ctx.getBean(YhdParser.class);
+    System.out.println(parser.parse("http://item.yhd.com/item/10791608"));
 		
 	}
 }

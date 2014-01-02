@@ -17,32 +17,22 @@ http://www.springframework.org/schema/data/mongo http://www.springframework.org/
   <!-- 日志客户端配置 -->
   <bean id="loggerClient" class="im.dadoo.logger.client.impl.JmsLoggerClient" />
   
-  <!-- 缓存配置 -->
-<!--  <bean id="redisCache" class="im.dadoo.price.cache.impl.RedisCache">
-    <constructor-arg type="java.lang.String">
-      <value>redis.dadoo.im</value>
-    </constructor-arg>
-    <constructor-arg type="int">
-      <value>6379</value>
-    </constructor-arg>
-    <constructor-arg type="int">
-      <value>60000</value>
-    </constructor-arg>
-    <constructor-arg type="int">
-      <value>1000</value>
-    </constructor-arg>
-  </bean>-->
-  
-<!--  <bean id="cachePriceService" class="im.dadoo.price.cache.service.CachePriceService">
-    <constructor-arg type="im.dadoo.price.cache.Cache">
-      <ref bean="redisCache" />
-    </constructor-arg>
-  </bean>-->
-  
   <bean id="mapper" class="org.codehaus.jackson.map.ObjectMapper" />
   
   <!-- mongo -->
-  <mongo:mongo host="mongo.dadoo.im" port="27017"/>
+  <mongo:mongo host="mongo.dadoo.im" port="27017">
+    <mongo:options connections-per-host="80"
+                 threads-allowed-to-block-for-connection-multiplier="400"
+                 connect-timeout="31536000"          
+                 max-wait-time="31536000"    
+                 auto-connect-retry="true"
+                 socket-keep-alive="true"  
+                 slave-ok="true"
+                 
+                 write-number="1"
+                 write-timeout="31536000"
+                 write-fsync="true" />
+  </mongo:mongo>
   <mongo:db-factory dbname="dadoo-price" mongo-ref="mongo" />
   <mongo:mapping-converter base-package="im.dadoo" />
   <bean id="mappingContext" class="org.springframework.data.mongodb.core.mapping.MongoMappingContext" />
