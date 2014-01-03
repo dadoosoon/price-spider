@@ -21,31 +21,32 @@ http://www.springframework.org/schema/data/mongo http://www.springframework.org/
   
   <!-- mongo -->
   <mongo:mongo host="mongo.dadoo.im" port="27017">
-    <mongo:options connections-per-host="80"
-                 threads-allowed-to-block-for-connection-multiplier="400"
-                 connect-timeout="31536000"          
-                 max-wait-time="31536000"    
+    <mongo:options connections-per-host="2"
+                 threads-allowed-to-block-for-connection-multiplier="5"
+                 connect-timeout="2147483647"          
+                 max-wait-time="2147483647"    
                  auto-connect-retry="true"
-                 socket-keep-alive="true"  
+                 socket-keep-alive="true" 
+                 socket-timeout="2147483647" 
                  slave-ok="true"
-                 
                  write-number="1"
-                 write-timeout="31536000"
+                 write-timeout="2147483647"
                  write-fsync="true" />
   </mongo:mongo>
   <mongo:db-factory dbname="dadoo-price" mongo-ref="mongo" />
-  <mongo:mapping-converter base-package="im.dadoo" />
+<!--  <mongo:mapping-converter base-package="im.dadoo" />-->
+  <bean id="defaultMongoTypeMapper" class="org.springframework.data.mongodb.core.convert.DefaultMongoTypeMapper">
+		<constructor-arg name="typeKey">
+			<null /><!-- 这里设置为空,可以把 spring data mongodb 多余保存的_class字段去掉 -->
+		</constructor-arg>
+	</bean>
   <bean id="mappingContext" class="org.springframework.data.mongodb.core.mapping.MongoMappingContext" />
   <bean id="mappingMongoConverter" class="org.springframework.data.mongodb.core.convert.MappingMongoConverter">
 		<constructor-arg name="mongoDbFactory" ref="mongoDbFactory" />
 		<constructor-arg name="mappingContext" ref="mappingContext" />
 		<property name="typeMapper" ref="defaultMongoTypeMapper" />
 	</bean>
-  <bean id="defaultMongoTypeMapper" class="org.springframework.data.mongodb.core.convert.DefaultMongoTypeMapper">
-		<constructor-arg name="typeKey">
-			<null /><!-- 这里设置为空,可以把 spring data mongodb 多余保存的_class字段去掉 -->
-		</constructor-arg>
-	</bean>
+  
   <bean id="mt" class="org.springframework.data.mongodb.core.MongoTemplate">
 		<constructor-arg name="mongoDbFactory" ref="mongoDbFactory" />
 		<constructor-arg name="mongoConverter" ref="mappingMongoConverter" />
