@@ -6,11 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import im.dadoo.logger.client.LoggerClient;
-import im.dadoo.price.domain.Link;
-import im.dadoo.price.domain.Price;
-import im.dadoo.price.domain.Seller;
-import im.dadoo.price.service.LinkService;
-import im.dadoo.price.service.PriceService;
+import im.dadoo.price.core.domain.Link;
+import im.dadoo.price.core.domain.Record;
+import im.dadoo.price.core.domain.Seller;
+import im.dadoo.price.core.service.LinkService;
+import im.dadoo.price.core.service.RecordService;
 import im.dadoo.price.spider.cons.Constants;
 import im.dadoo.price.spider.parser.Fruit;
 import im.dadoo.price.spider.parser.Parser;
@@ -33,7 +33,7 @@ public class Spider {
 	private LinkService linkService;
 	
 	@Autowired
-	private PriceService priceService;
+	private RecordService recordService;
 	
 	@Autowired
 	private Parser jdParser;
@@ -79,15 +79,15 @@ public class Spider {
 					Fruit fruit = parser.parse(link.getUrl());
 					Long t2 = System.currentTimeMillis();
 					if (fruit != null) {
-						Double value = null;
-						if (fruit.getValue() != null) {
-							value = fruit.getValue() / link.getAmount();
+						Double price = null;
+						if (fruit.getPrice() != null) {
+							price = fruit.getPrice() / link.getAmount();
 						}
-						Price price = this.priceService.save(value, fruit.getStock(), link);
+						Record record = this.recordService.save(link, price, fruit.getStock());
 						Long t3 = System.currentTimeMillis();
 						logger.info(String.format("采集%s网站结束,商品名为%s,单价为%2.2f,库存状况%d,采集耗时%d毫秒,存储耗时%d毫秒", 
-								link.getSeller().getName(), link.getProduct().getName(), value, fruit.getStock(), t2 - t1, t3 - t2));
-						parser.sendExtractionLog(price, t3 - t1);
+								link.getSeller().getName(), link.getProduct().getName(), price, fruit.getStock(), t2 - t1, t3 - t2));
+						parser.sendExtractionLog(record, t3 - t1);
 					}
 				} catch(Exception e1) {
 					Long t4 = System.currentTimeMillis();

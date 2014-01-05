@@ -28,8 +28,8 @@ public class JdParser extends Parser {
         fruit.setStock(1);
       }
     } else {
-      logger.error("url:%s,%s", url, Parser.Log_PARSE_STOCK_FAIL);
-      this.sendFailureLog(url, "JdParser", Parser.Log_PARSE_STOCK_FAIL);
+      logger.error("url:%s,%s", url, Parser.LOG_PARSE_STOCK_FAIL);
+      this.sendFailureLog(url, "JdParser", Parser.LOG_PARSE_STOCK_FAIL);
     }
 		
 		//然后解析价格
@@ -39,14 +39,14 @@ public class JdParser extends Parser {
       html = es.get(1).text();
       if (html != null && !html.equals("")) {
         Double value = this.parserValue(html.substring(6));
-        fruit.setValue(value);
+        fruit.setPrice(value);
       }
       else {
-        fruit.setValue(null);
+        fruit.setPrice(null);
       }
     } else {
-      logger.error("url:%s,%s", url, Parser.Log_PARSE_VALUE_FAIL);
-      this.sendFailureLog(url, "JdParser", Parser.Log_PARSE_VALUE_FAIL);
+      logger.error("url:%s,%s", url, Parser.LOG_PARSE_VALUE_FAIL);
+      this.sendFailureLog(url, "JdParser", Parser.LOG_PARSE_VALUE_FAIL);
     }
 		
 		return fruit;

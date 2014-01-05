@@ -2,22 +2,22 @@ package im.dadoo.price.spider.parser;
 
 public class Fruit {
 
-	private Double value;
+	private Double price;
 	
 	private Integer stock;
 	
 	public Fruit() {
-    this.value = null;
+    this.price = null;
     this.stock = 0;
   }
 	
-	public Fruit(Double value) {
-		this.value = value;
+	public Fruit(Double price) {
+		this.price = price;
 		this.stock = 1;
 	}
 	
-	public Fruit(Double value, Integer stock) {
-		this.value = value;
+	public Fruit(Double price, Integer stock) {
+		this.price = price;
 		this.stock = stock;
 	}
 
@@ -25,18 +25,18 @@ public class Fruit {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("{");
-		sb.append("value:").append(value).append(",");
+		sb.append("price:").append(price).append(",");
 		sb.append("stock:").append(stock);
 		sb.append("}");
 		return sb.toString();
 	}
 	
-	public Double getValue() {
-		return value;
+	public Double getPrice() {
+		return price;
 	}
 
-	public void setValue(Double value) {
-		this.value = value;
+	public void setPrice(Double price) {
+		this.price = price;
 	}
 
 	public Integer getStock() {

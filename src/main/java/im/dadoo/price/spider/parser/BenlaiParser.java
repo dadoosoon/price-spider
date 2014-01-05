@@ -22,7 +22,7 @@ public class BenlaiParser extends Parser{
 		
 		if (html != null) {
       Double value = this.parserValue(html.substring(1));
-			fruit.setValue(value);
+			fruit.setPrice(value);
       fruit.setStock(1);
 		} else {
       fruit.setStock(0);

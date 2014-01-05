@@ -46,8 +46,8 @@ public class SfbestParser extends Parser {
         fruit.setStock(0);
       }
     } else {
-      logger.error("url:%s,%s", url, Parser.Log_PARSE_STOCK_FAIL);
-      this.sendFailureLog(url, "SfbestParser", Parser.Log_PARSE_STOCK_FAIL);
+      logger.error("url:%s,%s", url, Parser.LOG_PARSE_STOCK_FAIL);
+      this.sendFailureLog(url, "SfbestParser", Parser.LOG_PARSE_STOCK_FAIL);
     }
 		res.close();
 		
@@ -65,11 +65,11 @@ public class SfbestParser extends Parser {
       String html = es.first().text();
       if (html != null && !html.equals("")) {
         Double value = this.parserValue(html);
-        fruit.setValue(value);
+        fruit.setPrice(value);
       }
     } else {
-      logger.error("url:%s,%s", url, Parser.Log_PARSE_VALUE_FAIL);
-      this.sendFailureLog(url, "SfbestParser", Parser.Log_PARSE_VALUE_FAIL);
+      logger.error("url:%s,%s", url, Parser.LOG_PARSE_VALUE_FAIL);
+      this.sendFailureLog(url, "SfbestParser", Parser.LOG_PARSE_VALUE_FAIL);
     }
 		res.close();
 		return fruit;

@@ -33,10 +33,10 @@ public class YixunParser extends Parser {
         Double value = this.parserValue(e.text().substring(1));
         prices.add(value);
       }
-      fruit.setValue(Collections.min(prices));
+      fruit.setPrice(Collections.min(prices));
     } else {
-      logger.error("url:%s,%s", url, Parser.Log_PARSE_VALUE_FAIL);
-      this.sendFailureLog(url, "YixunParser", Parser.Log_PARSE_VALUE_FAIL);
+      logger.error("url:%s,%s", url, Parser.LOG_PARSE_VALUE_FAIL);
+      this.sendFailureLog(url, "YixunParser", Parser.LOG_PARSE_VALUE_FAIL);
     }
 		
 		return fruit;

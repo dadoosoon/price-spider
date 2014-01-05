@@ -23,7 +23,7 @@ public class AmazonCnParser extends Parser {
 			String html = es.first().text();
 			if (html != null && !html.equals("")) {
         Double value = this.parserValue(html.substring(2));
-				fruit.setValue(value);
+				fruit.setPrice(value);
 			}
 		} else {
 			HttpGet httpGet = new HttpGet(url);
@@ -36,8 +36,8 @@ public class AmazonCnParser extends Parser {
 				logger.info(String.format("缺货:%s", url));
 				fruit.setStock(0);
 			} else {
-        logger.error(String.format("url:%s,%s", url, Parser.Log_PARSE_STOCK_FAIL));
-        this.sendFailureLog(url, "AmazonCnParser", Parser.Log_PARSE_STOCK_FAIL);
+        logger.error(String.format("url:%s,%s", url, Parser.LOG_PARSE_STOCK_FAIL));
+        this.sendFailureLog(url, "AmazonCnParser", Parser.LOG_PARSE_STOCK_FAIL);
       }
       res.close();
 		}

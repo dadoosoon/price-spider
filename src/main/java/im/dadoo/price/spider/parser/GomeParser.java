@@ -22,7 +22,7 @@ public class GomeParser extends Parser {
 		String result = html.substring(index1, index1 + index2);
 		
     Double value = this.parserValue(result);
-		fruit.setValue(value);
+		fruit.setPrice(value);
 		fruit.setStock(1);
 		return fruit;
 	}

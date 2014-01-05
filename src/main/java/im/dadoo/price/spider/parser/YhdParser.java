@@ -31,8 +31,8 @@ public class YhdParser extends Parser {
 				fruit.setStock(1);
 			}
 		} else {
-      logger.error("url:%s,%s", url, Parser.Log_PARSE_STOCK_FAIL);
-      this.sendFailureLog(url, "YhdParser", Parser.Log_PARSE_STOCK_FAIL);
+      logger.error("url:%s,%s", url, Parser.LOG_PARSE_STOCK_FAIL);
+      this.sendFailureLog(url, "YhdParser", Parser.LOG_PARSE_STOCK_FAIL);
 		}
 		if (map.containsKey("currentPrice")) {
 			Double value = null;
@@ -43,11 +43,11 @@ public class YhdParser extends Parser {
         } else if (rawValue.getClass().equals(Double.class)) {
           value = (Double)rawValue;
         } else {
-          logger.error("url:%s,%s", url, Parser.Log_PARSE_VALUE_FAIL);
-          this.sendFailureLog(url, "YhdParser", Parser.Log_PARSE_VALUE_FAIL);
+          logger.error("url:%s,%s", url, Parser.LOG_PARSE_VALUE_FAIL);
+          this.sendFailureLog(url, "YhdParser", Parser.LOG_PARSE_VALUE_FAIL);
         }
       }
-			fruit.setValue(value);
+			fruit.setPrice(value);
 		}
 		return fruit;
 	}

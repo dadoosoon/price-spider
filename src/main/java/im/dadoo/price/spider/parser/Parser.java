@@ -2,7 +2,7 @@ package im.dadoo.price.spider.parser;
 
 import im.dadoo.log.Log;
 import im.dadoo.logger.client.LoggerClient;
-import im.dadoo.price.domain.Price;
+import im.dadoo.price.core.domain.Record;
 import im.dadoo.price.spider.cons.Constants;
 
 import java.io.IOException;
@@ -22,12 +22,12 @@ public abstract class Parser {
 	public static final Integer PERIOD = 900000;
 	public static final Integer TIME_OUT = 60000;
 	
-	public static final String PRICE = "price";
+	public static final String RECORD = "record";
 	public static final String TIME = "time";
 	
-  public static final String Log_PARSE_VALUE_FAIL = "解析价格失败,可能页面已被修改";
+  public static final String LOG_PARSE_VALUE_FAIL = "解析价格失败,可能页面已被修改";
   
-  public static final String Log_PARSE_STOCK_FAIL = "解析库存失败,可能页面已被修改";
+  public static final String LOG_PARSE_STOCK_FAIL = "解析库存失败,可能页面已被修改";
   
 	@Autowired
 	protected LoggerClient loggerClient;
@@ -44,9 +44,9 @@ public abstract class Parser {
     return value;
   }
   
-	public void sendExtractionLog(Price price, Long time) {
+	public void sendExtractionLog(Record record, Long time) {
 		Map<String, Object> content = new HashMap<String, Object>();
-		content.put(Parser.PRICE, price);
+		content.put(Parser.RECORD, record);
 		content.put(Parser.TIME, time);
 		Log log = new Log(Constants.SERVICE_NAME, 
 				Constants.TYPE_EXTRACTION, System.currentTimeMillis(), content);

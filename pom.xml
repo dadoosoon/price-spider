@@ -23,11 +23,6 @@
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>price-cache</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>${project.groupId}</groupId>
       <artifactId>logger-client</artifactId>
       <version>${project.version}</version>
     </dependency>
@@ -93,8 +88,13 @@
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>price-db</artifactId>
+      <artifactId>price-core</artifactId>
       <version>0.0.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-web</artifactId>
+      <version>3.2.5.RELEASE</version>
     </dependency>
   </dependencies>
 </project>

@@ -31,18 +31,18 @@ public class WomaiParser extends Parser {
 		} else if (json.indexOf("\"sellable\":false") > -1){
 			fruit.setStock(0);
 		} else {
-			logger.error("url:%s,%s", url, Parser.Log_PARSE_STOCK_FAIL);
-      this.sendFailureLog(url, "WomaiParser", Parser.Log_PARSE_STOCK_FAIL);
+			logger.error("url:%s,%s", url, Parser.LOG_PARSE_STOCK_FAIL);
+      this.sendFailureLog(url, "WomaiParser", Parser.LOG_PARSE_STOCK_FAIL);
 		}
 		Integer index1 = json.indexOf(PREFIX) + PREFIX.length();
 		Integer index2 = json.substring(index1).indexOf("\"");
 		String result = json.substring(index1, index1 + index2);
 		if (result != null && !result.equals("")) {
       Double value = this.parserValue(result);
-      fruit.setValue(value);  
+      fruit.setPrice(value);  
     } else {
-      logger.error("url:%s,%s", url, Parser.Log_PARSE_VALUE_FAIL);
-      this.sendFailureLog(url, "WomaiParser", Parser.Log_PARSE_VALUE_FAIL);
+      logger.error("url:%s,%s", url, Parser.LOG_PARSE_VALUE_FAIL);
+      this.sendFailureLog(url, "WomaiParser", Parser.LOG_PARSE_VALUE_FAIL);
     }
 		return fruit;
 	}

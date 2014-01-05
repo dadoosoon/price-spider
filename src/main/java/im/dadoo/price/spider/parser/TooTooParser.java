@@ -19,9 +19,9 @@ public class TooTooParser extends Parser {
 		String html = es.first().ownText();
 		if (html != null) {
       Double value = this.parserValue(html.substring(1));
-			fruit.setValue(value);
+			fruit.setPrice(value);
 		} else {
-			fruit.setValue(null);
+			fruit.setPrice(null);
 		}
 		return fruit;
 	}

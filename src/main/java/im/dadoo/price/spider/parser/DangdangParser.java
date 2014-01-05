@@ -29,8 +29,8 @@ public class DangdangParser extends Parser {
 		
     //首先判断用户页面是否有效
     if (fragment.indexOf("havestock") == -1) {
-      logger.error("url:%s,%s", url, Parser.Log_PARSE_STOCK_FAIL);
-      this.sendFailureLog(url, "DangdangParser", Parser.Log_PARSE_STOCK_FAIL);
+      logger.error("url:%s,%s", url, Parser.LOG_PARSE_STOCK_FAIL);
+      this.sendFailureLog(url, "DangdangParser", Parser.LOG_PARSE_STOCK_FAIL);
     } else {
       if (-1 < fragment.indexOf("\"havestock\":true")) {
         fruit.setStock(1);
@@ -52,10 +52,10 @@ public class DangdangParser extends Parser {
 			else {
         value = this.parserValue(html.substring(1));
 			}
-			fruit.setValue(value);
+			fruit.setPrice(value);
 		} else {
-      logger.error(String.format("url:%s,%s", url, Parser.Log_PARSE_VALUE_FAIL));
-      this.sendFailureLog(url, "DangdangParser", Parser.Log_PARSE_VALUE_FAIL);
+      logger.error(String.format("url:%s,%s", url, Parser.LOG_PARSE_VALUE_FAIL));
+      this.sendFailureLog(url, "DangdangParser", Parser.LOG_PARSE_VALUE_FAIL);
     }
 		return fruit;
 	}
