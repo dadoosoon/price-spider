@@ -17,13 +17,15 @@ public class DangdangParser extends Parser {
 	
 	private static final String STOCK_URL = 
 			"http://product.dangdang.com/pricestock/callback.php?type=stockv2&product_id=%s";
+  
 	public Fruit parse(String url) throws IOException {
 		Fruit fruit = new Fruit();
 		//首先判断是否有货
 		String[] ts = url.split("/");
 		String pid = ts[ts.length - 1].split("\\.")[0];
 		HttpGet httpGet = new HttpGet(String.format(STOCK_URL, pid));
-		CloseableHttpResponse res = Parser.httpClient.execute(httpGet);
+    httpGet.setConfig(this.config);
+		CloseableHttpResponse res = this.httpClient.execute(httpGet);
 		HttpEntity entity = res.getEntity();
 		String fragment = EntityUtils.toString(entity);
 		
@@ -40,17 +42,23 @@ public class DangdangParser extends Parser {
     }
 		res.close();
 		//接下来解析价格
-		Document doc = Jsoup.connect(url).timeout(Parser.TIME_OUT).get();
+    httpGet = new HttpGet(url);
+    httpGet.setConfig(this.config);
+		res = this.httpClient.execute(httpGet);
+		entity = res.getEntity();
+		String html = EntityUtils.toString(entity);
+    res.close();
+		Document doc = Jsoup.parse(html);
 		Elements es = doc.select("#salePriceTag");
-		String html = es.first().text();
+		fragment = es.first().text();
 		
-		if (html != null && !html.equals("")) {
+		if (fragment != null && !fragment.equals("")) {
 			Double value = null;
-			if (Character.isDigit(html.charAt(0))) {
-        value = this.parserValue(html);
+			if (Character.isDigit(fragment.charAt(0))) {
+        value = this.parserValue(fragment);
 			}
 			else {
-        value = this.parserValue(html.substring(1));
+        value = this.parserValue(fragment.substring(1));
 			}
 			fruit.setPrice(value);
 		} else {

@@ -22,7 +22,8 @@ public class YhdParser extends Parser {
 		String[] ts = url.split("/");
 		
 		String pid = ts[ts.length - 1];
-		Map<String, Object> map = this.mapper.readValue(new URL(String.format(PRICE_URL, pid)), Map.class);
+    String json = this.getHtml(String.format(PRICE_URL, pid));
+		Map<String, Object> map = this.mapper.readValue(json, Map.class);
 		//首先判断是否有货
 		if (map.containsKey("canSale")) {
 			if (map.get("canSale") == null || (Integer)map.get("canSale") == 0) {

@@ -14,11 +14,13 @@ public class TooTooParser extends Parser {
 	public Fruit parse(String url) throws IOException {
 		Fruit fruit = new Fruit();
 		fruit.setStock(1);
-		Document doc = Jsoup.connect(url).timeout(Parser.TIME_OUT).get();
+    
+    String html = this.getHtml(url);
+		Document doc = Jsoup.parse(html);
 		Elements es = doc.select(".cuxiaojia span");
-		String html = es.first().ownText();
-		if (html != null) {
-      Double value = this.parserValue(html.substring(1));
+		String fragment = es.first().ownText();
+		if (fragment != null) {
+      Double value = this.parserValue(fragment.substring(1));
 			fruit.setPrice(value);
 		} else {
 			fruit.setPrice(null);

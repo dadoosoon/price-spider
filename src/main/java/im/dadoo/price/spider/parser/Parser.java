@@ -8,9 +8,13 @@ import im.dadoo.price.spider.cons.Constants;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import org.apache.http.HttpEntity;
 import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
 
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,12 +45,23 @@ public abstract class Parser {
             .setSocketTimeout(Constants.TIME_OUT).build();
   }
   
+  protected String getHtml(String url) throws IOException {
+    HttpGet httpGet = new HttpGet(url);
+    httpGet.setConfig(this.config);
+    
+		CloseableHttpResponse res = this.httpClient.execute(httpGet);
+		HttpEntity entity = res.getEntity();
+		String html = EntityUtils.toString(entity);
+    res.close();
+    return html;
+  }
+  
   protected Double parserValue(String html) {
     Double value = null;
     try {
       value = Double.parseDouble(html);
     } catch(NumberFormatException e) {
-      e.printStackTrace();
+      logger.error("价格解析失败");
     }
     return value;
   }

@@ -1,5 +1,6 @@
 package im.dadoo.price.spider.parser;
 
+import im.dadoo.price.spider.cons.Constants;
 import java.io.IOException;
 
 
@@ -18,7 +19,8 @@ import org.springframework.stereotype.Component;
 public class YixunParser extends Parser {
 	
 	public Fruit parse(String url) throws IOException {
-		Document doc = Jsoup.connect(url).userAgent("").cookie("wsid", "2001").timeout(Parser.TIME_OUT).get();
+		Document doc = Jsoup.connect(url).userAgent("").cookie("wsid", "2001")
+            .timeout(Constants.TIME_OUT).get();
 		Elements es = doc.select("#sea_notify");
 		Fruit fruit = new Fruit();
 		if (es != null) {

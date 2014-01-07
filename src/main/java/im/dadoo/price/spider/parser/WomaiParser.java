@@ -20,11 +20,7 @@ public class WomaiParser extends Parser {
 		Integer endIndex = url.indexOf(".htm");
 		Integer beginIndex = endIndex - 6;
 		String ids = url.substring(beginIndex, endIndex);
-		HttpGet httpGet = new HttpGet(String.format(URL, ids));
-		CloseableHttpResponse res = Parser.httpClient.execute(httpGet);
-		HttpEntity entity = res.getEntity();
-		String json = EntityUtils.toString(entity);
-    res.close();
+    String json = this.getHtml(String.format(URL, ids));
 		//首先判断是否有货
 		if (json.indexOf("\"sellable\":true") > -1) {
 			fruit.setStock(1);

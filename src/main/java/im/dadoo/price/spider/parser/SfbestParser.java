@@ -32,10 +32,11 @@ public class SfbestParser extends Parser {
 		String pid = ts[ts.length - 1].split("\\.")[0];
 		//首先判断是否有货
 		HttpPost httpPost = new HttpPost(STOCK_URL);
+    httpPost.setConfig(this.config);
 		List<NameValuePair> nvps = new ArrayList<NameValuePair>();
 		nvps.add(new BasicNameValuePair("product_id", pid.substring(pid.length() - 5)));
 		httpPost.setEntity(new UrlEncodedFormEntity(nvps));
-		CloseableHttpResponse res = Parser.httpClient.execute(httpPost);
+		CloseableHttpResponse res = this.httpClient.execute(httpPost);
 		HttpEntity entity = res.getEntity();
 		String fragment = EntityUtils.toString(entity);
     //若fragment为null证明获取库存方式已失效
@@ -53,10 +54,11 @@ public class SfbestParser extends Parser {
 		
 		//然后解析价格
 		httpPost = new HttpPost(PRICE_URL);
+    httpPost.setConfig(this.config);
 		nvps = new ArrayList<NameValuePair>();
 		nvps.add(new BasicNameValuePair("product_id", pid.substring(pid.length() - 5)));
 		httpPost.setEntity(new UrlEncodedFormEntity(nvps));
-		res = Parser.httpClient.execute(httpPost);
+		res = this.httpClient.execute(httpPost);
 		entity = res.getEntity();
 		fragment = EntityUtils.toString(entity);
 		Document doc = Jsoup.parseBodyFragment(fragment);

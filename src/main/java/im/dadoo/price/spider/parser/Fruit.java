@@ -11,11 +11,6 @@ public class Fruit {
     this.stock = 0;
   }
 	
-	public Fruit(Double price) {
-		this.price = price;
-		this.stock = 1;
-	}
-	
 	public Fruit(Double price, Integer stock) {
 		this.price = price;
 		this.stock = stock;
