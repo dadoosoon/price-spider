@@ -66,6 +66,7 @@ public class Spider {
 	private Parser benlaiParser;
 	
 	public void start() {
+    logger.info("新一轮采集开始！！！！！");
 		List<Link> links = this.linkService.list();
     //乱序采集
 		links = this.disorderLinks(links);
@@ -100,6 +101,7 @@ public class Spider {
 				} 
 			}
 		}
+    logger.info("本轮采集结束！！！！！");
 	}
 	
 	private Parser choose(Seller seller) {
