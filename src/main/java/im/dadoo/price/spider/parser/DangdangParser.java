@@ -23,7 +23,7 @@ public class DangdangParser extends Parser {
 		String[] ts = url.split("/");
 		String pid = ts[ts.length - 1].split("\\.")[0];
 		HttpGet httpGet = new HttpGet(String.format(STOCK_URL, pid));
-		CloseableHttpResponse res = Parser.httpclient.execute(httpGet);
+		CloseableHttpResponse res = Parser.httpClient.execute(httpGet);
 		HttpEntity entity = res.getEntity();
 		String fragment = EntityUtils.toString(entity);
 		

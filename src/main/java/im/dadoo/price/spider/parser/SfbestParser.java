@@ -35,7 +35,7 @@ public class SfbestParser extends Parser {
 		List<NameValuePair> nvps = new ArrayList<NameValuePair>();
 		nvps.add(new BasicNameValuePair("product_id", pid.substring(pid.length() - 5)));
 		httpPost.setEntity(new UrlEncodedFormEntity(nvps));
-		CloseableHttpResponse res = Parser.httpclient.execute(httpPost);
+		CloseableHttpResponse res = Parser.httpClient.execute(httpPost);
 		HttpEntity entity = res.getEntity();
 		String fragment = EntityUtils.toString(entity);
     //若fragment为null证明获取库存方式已失效
@@ -56,7 +56,7 @@ public class SfbestParser extends Parser {
 		nvps = new ArrayList<NameValuePair>();
 		nvps.add(new BasicNameValuePair("product_id", pid.substring(pid.length() - 5)));
 		httpPost.setEntity(new UrlEncodedFormEntity(nvps));
-		res = Parser.httpclient.execute(httpPost);
+		res = Parser.httpClient.execute(httpPost);
 		entity = res.getEntity();
 		fragment = EntityUtils.toString(entity);
 		Document doc = Jsoup.parseBodyFragment(fragment);

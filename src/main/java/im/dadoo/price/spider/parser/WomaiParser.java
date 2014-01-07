@@ -21,7 +21,7 @@ public class WomaiParser extends Parser {
 		Integer beginIndex = endIndex - 6;
 		String ids = url.substring(beginIndex, endIndex);
 		HttpGet httpGet = new HttpGet(String.format(URL, ids));
-		CloseableHttpResponse res = Parser.httpclient.execute(httpGet);
+		CloseableHttpResponse res = Parser.httpClient.execute(httpGet);
 		HttpEntity entity = res.getEntity();
 		String json = EntityUtils.toString(entity);
     res.close();
