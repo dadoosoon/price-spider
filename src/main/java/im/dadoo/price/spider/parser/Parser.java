@@ -62,6 +62,7 @@ public abstract class Parser {
       value = Double.parseDouble(html);
     } catch(NumberFormatException e) {
       logger.error("价格解析失败");
+      e.printStackTrace();
     }
     return value;
   }
