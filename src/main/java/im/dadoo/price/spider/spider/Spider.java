@@ -67,6 +67,7 @@ public class Spider {
 	
 	public void start() {
     logger.info("新一轮采集开始！！！！！");
+    Long tt1 = System.currentTimeMillis();
 		List<Link> links = this.linkService.list();
     //乱序采集
 		links = this.disorderLinks(links);
@@ -101,7 +102,8 @@ public class Spider {
 				} 
 			}
 		}
-    logger.info("本轮采集结束！！！！！");
+    Long tt2 = System.currentTimeMillis();
+    logger.info(String.format("本轮采集结束！！！！！共耗时:%f分钟", 1.0 * (tt2 - tt1) / 60000));
 	}
 	
 	private Parser choose(Seller seller) {
