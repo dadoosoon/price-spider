@@ -14,15 +14,15 @@ public class App {
 	
   public static void main(String[] args) throws IOException {
   	
-  	Timer timer = new Timer();
-  	timer.schedule(new TimerTask() {
-  		
-   		private final ApplicationContext ctx = new ClassPathXmlApplicationContext(
+    ApplicationContext ctx = new ClassPathXmlApplicationContext(
               new String[]{"price-spider-context.xml", 
                            "logger-client-context.xml", 
                            "price-core-context.xml"});
-    	private final Spider spider = (Spider) ctx.getBean("spider");
-    	
+    final Spider spider = (Spider) ctx.getBean("spider");
+    
+  	Timer timer = new Timer();
+  	timer.schedule(new TimerTask() {
+
 			@Override
 			public void run() {
 					spider.start();
