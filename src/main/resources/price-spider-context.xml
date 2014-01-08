@@ -21,12 +21,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   
   <bean id="mapper" class="org.codehaus.jackson.map.ObjectMapper" />
   
-  <bean class="org.springframework.orm.hibernate4.support.OpenSessionInViewInterceptor">     
-     <property name="sessionFactory">     
-      <ref bean="sessionFactory"/>     
-     </property>   
-  </bean>
-  
   <context:annotation-config />
   <context:component-scan base-package="im.dadoo" />
 </beans>

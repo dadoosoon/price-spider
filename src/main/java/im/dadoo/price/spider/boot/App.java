@@ -15,9 +15,10 @@ public class App {
   public static void main(String[] args) throws IOException {
   	
     ApplicationContext ctx = new ClassPathXmlApplicationContext(
-              new String[]{"price-spider-context.xml", 
-                           "logger-client-context.xml", 
-                           "price-core-context.xml"});
+              new String[]{"dadoo-mq-context.xml",
+                "logger-client-context.xml", 
+                "price-core-context.xml",
+                "price-spider-context.xml"});
     final Spider spider = (Spider) ctx.getBean("spider");
     
   	Timer timer = new Timer();

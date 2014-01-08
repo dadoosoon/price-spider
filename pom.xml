@@ -24,7 +24,7 @@
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>logger-client</artifactId>
-      <version>${project.version}</version>
+      <version>0.0.2</version>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
@@ -83,11 +83,6 @@
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>logger-client</artifactId>
-      <version>0.0.1</version>
-    </dependency>
-    <dependency>
-      <groupId>${project.groupId}</groupId>
       <artifactId>price-core</artifactId>
       <version>0.0.1</version>
     </dependency>
@@ -95,6 +90,11 @@
       <groupId>org.springframework</groupId>
       <artifactId>spring-web</artifactId>
       <version>3.2.5.RELEASE</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpclient</artifactId>
+      <version>4.3.1</version>
     </dependency>
   </dependencies>
 </project>
