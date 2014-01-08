@@ -1,7 +1,6 @@
 package im.dadoo.price.spider.boot;
 
 import im.dadoo.price.spider.cons.Constants;
-import im.dadoo.price.spider.parser.Parser;
 import im.dadoo.price.spider.spider.Spider;
 
 import java.io.IOException;
