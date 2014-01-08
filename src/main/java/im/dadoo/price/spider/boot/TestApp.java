@@ -1,6 +1,7 @@
 package im.dadoo.price.spider.boot;
 
 
+import im.dadoo.price.spider.parser.AmazonCnParser;
 import im.dadoo.price.spider.parser.DangdangParser;
 import im.dadoo.price.spider.parser.Parser;
 import im.dadoo.price.spider.parser.SfbestParser;
@@ -23,8 +24,8 @@ public class TestApp {
 	public static void main(String[] args) throws IOException {
 		ApplicationContext ctx = new ClassPathXmlApplicationContext(
               new String[]{"price-spider-context.xml", "logger-client-context.xml"});
-    Parser parser = ctx.getBean(YhdParser.class);
-    System.out.println(parser.parse("http://item.yhd.com/item/10791608"));
+    Parser parser = ctx.getBean(AmazonCnParser.class);
+    System.out.println(parser.parse("http://www.amazon.cn/dp/B0057UJ47I"));
 		
 	}
 }

@@ -34,7 +34,7 @@ public class AmazonCnParser extends Parser {
 		if (es.first() != null) {
 			String fragment = es.first().text();
 			if (fragment != null && !fragment.equals("")) {
-        Double value = this.parserValue(html.substring(2));
+        Double value = this.parserValue(fragment.substring(2));
 				fruit.setPrice(value);
         fruit.setStock(1);
 			}
@@ -42,6 +42,7 @@ public class AmazonCnParser extends Parser {
 			es = doc.select(".ddm-sbr-avail-title");
 			if (es.text() != null && es.text().equals("缺货登记")) {
 				logger.info(String.format("缺货:%s", url));
+        fruit.setPrice(null);
 				fruit.setStock(0);
 			} else {
         logger.error(String.format("url:%s,%s", url, Parser.LOG_PARSE_STOCK_FAIL));

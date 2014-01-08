@@ -26,7 +26,7 @@ public class JdParser extends Parser {
 		//首先判断有没有货
 		Elements es = doc.select(".p-stock");
 		String fragment = es.text();
-    //html为null说明库存解析方法已失效
+    //fragment为null说明库存解析方法已失效
     if (fragment != null) {
       if (fragment.indexOf("无货") > -1) {
         fruit.setStock(0);
