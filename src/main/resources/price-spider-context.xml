@@ -21,47 +21,11 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   
   <bean id="mapper" class="org.codehaus.jackson.map.ObjectMapper" />
   
-  <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
-    <property name="url" value="jdbc:mysql://db.dadoo.im:33066/dadooprice?characterEncoding=utf8" />
-    <property name="username" value="root" />
-    <property name="password" value="dadoo2012dadoo" />
-  </bean>
-  
-  <bean id="sessionFactory" 
-    class="org.springframework.orm.hibernate4.LocalSessionFactoryBean"
-    p:dataSource-ref="dataSource">
-    <property name="hibernateProperties">
-      <props>
-        <prop key="hibernate.dialect">
-          org.hibernate.dialect.MySQLDialect
-        </prop>
-        <prop key="hibernate.show_sql">
-          true
-        </prop>
-        <prop key="hibernate.current_session_context_class">
-          org.springframework.orm.hibernate4.SpringSessionContext
-        </prop>
-      </props>
-    </property>
-    
-    <!-- 注解方式配置 -->
-    <property name="packagesToScan">
-      <list>
-        <value>im.dadoo</value> 
-      </list> 
-    </property>
-  </bean>
-  
   <bean class="org.springframework.orm.hibernate4.support.OpenSessionInViewInterceptor">     
      <property name="sessionFactory">     
       <ref bean="sessionFactory"/>     
      </property>   
   </bean>
-  
-  <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">  
-    <property name="sessionFactory" ref="sessionFactory" />  
-  </bean>
-  <tx:annotation-driven transaction-manager="transactionManager" /> 
   
   <context:annotation-config />
   <context:component-scan base-package="im.dadoo" />
