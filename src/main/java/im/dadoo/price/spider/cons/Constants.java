@@ -12,5 +12,5 @@ public final class Constants {
   
   public static final Integer TIME_OUT = 60000;
   
-  public static final Integer PERIOD = 900000;
+  public static final Long PERIOD = 900000L;
 }

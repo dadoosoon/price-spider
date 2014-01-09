@@ -24,17 +24,23 @@ public class App {
                 "price-core-context.xml",
                 "price-spider-context.xml"});
     final Spider spider = (Spider) ctx.getBean("spider");
-    
-  	Timer timer = new Timer();
-  	timer.schedule(new TimerTask() {
-
-			@Override
-			public void run() {
-        Long t1 = System.currentTimeMillis();
-				spider.start();
-				Long t2 = System.currentTimeMillis();
-        Double m = (t2 - t1) / 60000.0;
-        logger.info(String.format("本轮采集总共耗时%f", m));
-			}}, 0, Constants.PERIOD);
+    while (true) {
+      Long t1 = System.currentTimeMillis();
+      spider.start();
+      Long t2 = System.currentTimeMillis();
+      Double m = (t2 - t1) / 60000.0;
+      logger.info(String.format("本轮采集总共耗时%f", m));
+    }
+//  	Timer timer = new Timer();
+//  	timer.schedule(new TimerTask() {
+//
+//			@Override
+//			public void run() {
+//        Long t1 = System.currentTimeMillis();
+//				spider.start();
+//				Long t2 = System.currentTimeMillis();
+//        Double m = (t2 - t1) / 60000.0;
+//        logger.info(String.format("本轮采集总共耗时%f", m));
+//			}}, 0, Constants.PERIOD);
   }
 }

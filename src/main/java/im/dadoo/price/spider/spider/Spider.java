@@ -14,6 +14,7 @@ import im.dadoo.price.core.service.RecordService;
 import im.dadoo.price.spider.cons.Constants;
 import im.dadoo.price.spider.parser.Fruit;
 import im.dadoo.price.spider.parser.Parser;
+import java.util.logging.Level;
 
 import org.apache.commons.math3.random.RandomDataGenerator;
 import org.slf4j.Logger;
@@ -70,35 +71,49 @@ public class Spider {
 		List<Link> links = this.linkService.list();
     //乱序采集
 		links = this.disorderLinks(links);
+    Long delay = Constants.PERIOD / links.size();
+    Long beginTime = null;
+    Long parseEndTime = null;
+    Long storeEndTime = null;
 		for (Link link : links) {
 			Parser parser = this.choose(link.getSeller());
 			if (parser != null) {
 				logger.info(String.format("开始采集%s网站数据,商品名%s,总量%d,url为%s", 
 						link.getSeller().getName(), link.getProduct().getName(), link.getAmount(), link.getUrl()));
-				Long t1 = System.currentTimeMillis();
+				beginTime = System.currentTimeMillis();
 				try {
 					Fruit fruit = parser.parse(link.getUrl());
-					Long t2 = System.currentTimeMillis();
+					parseEndTime = System.currentTimeMillis();
 					if (fruit != null) {
 						Double price = null;
 						if (fruit.getPrice() != null) {
 							price = fruit.getPrice() / link.getAmount();
 						}
 						Record record = this.recordService.save(link, price, fruit.getStock());
-						Long t3 = System.currentTimeMillis();
+						storeEndTime = System.currentTimeMillis();
 						logger.info(String.format("采集%s网站结束,商品名为%s,单价为%2.2f,库存状况%d,采集耗时%d毫秒,存储耗时%d毫秒", 
-								link.getSeller().getName(), link.getProduct().getName(), price, fruit.getStock(), t2 - t1, t3 - t2));
-						parser.sendExtractionLog(record, t3 - t1);
+								link.getSeller().getName(), link.getProduct().getName(), price, fruit.getStock(), 
+                parseEndTime - beginTime, storeEndTime - parseEndTime));
+						parser.sendExtractionLog(record, storeEndTime - parseEndTime);
 					}
 				} catch(Exception e1) {
-					Long t4 = System.currentTimeMillis();
+					storeEndTime = System.currentTimeMillis();
 					String description = String.format("采集%s结束,商品名为%s,价格解析失败,共耗时%d毫秒", 
-							link.getUrl(), link.getProduct().getName(), t4 - t1);
+							link.getUrl(), link.getProduct().getName(), storeEndTime - beginTime);
 					logger.error(description);
           e1.printStackTrace();
 					Log log = LogMaker.makeExceptionLog(Constants.SERVICE_NAME, description, e1);
 					this.loggerClient.send(log);
-				} 
+				} finally {
+          Long period = storeEndTime - beginTime;
+          if (period < delay) {
+            try {
+              Thread.sleep(delay - period);
+            } catch (InterruptedException ex) {
+              ex.printStackTrace();
+            }
+          }
+        }
 			}
 		}
     logger.info("本轮采集结束！！！！！");
