@@ -56,15 +56,15 @@ public abstract class Parser {
     return html;
   }
   
-  protected Double parserValue(String html) {
-    Double value = null;
+  protected Double parsePrice(String html) {
+    Double price = null;
     try {
-      value = Double.parseDouble(html);
+      price = Double.parseDouble(html);
     } catch(NumberFormatException e) {
       logger.error("价格解析失败");
       e.printStackTrace();
     }
-    return value;
+    return price;
   }
   
 	public void sendExtractionLog(Record record, Long time) {

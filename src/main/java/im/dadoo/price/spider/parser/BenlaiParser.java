@@ -18,18 +18,13 @@ public class BenlaiParser extends Parser{
 	public Fruit parse(String url) throws IOException {
     Fruit fruit = new Fruit();
     
-    HttpGet httpGet = new HttpGet(url);
-    httpGet.setConfig(this.config);
-    CloseableHttpResponse res = httpClient.execute(httpGet);
-    HttpEntity entity = res.getEntity();
-    String html = EntityUtils.toString(entity);
-		res.close();
+    String html = this.getHtml(url);
 		Document doc = Jsoup.parse(html);
 		Elements es = doc.select(".newprice span");
 		if (es.first() != null) {
 			String fragment = es.first().ownText();
       if (fragment != null) {
-        Double value = this.parserValue(fragment.substring(1));
+        Double value = this.parsePrice(fragment.substring(1));
         fruit.setPrice(value);
         fruit.setStock(1);
       } else {

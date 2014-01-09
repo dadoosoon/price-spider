@@ -28,17 +28,17 @@ public class WomaiParser extends Parser {
 			fruit.setStock(0);
 		} else {
 			logger.error("url:%s,%s", url, Parser.LOG_PARSE_STOCK_FAIL);
-      this.sendFailureLog(url, "WomaiParser", Parser.LOG_PARSE_STOCK_FAIL);
+      this.sendFailureLog(url, this.getClass().getSimpleName(), Parser.LOG_PARSE_STOCK_FAIL);
 		}
 		Integer index1 = json.indexOf(PREFIX) + PREFIX.length();
 		Integer index2 = json.substring(index1).indexOf("\"");
 		String result = json.substring(index1, index1 + index2);
 		if (result != null && !result.equals("")) {
-      Double value = this.parserValue(result);
+      Double value = this.parsePrice(result);
       fruit.setPrice(value);  
     } else {
       logger.error("url:%s,%s", url, Parser.LOG_PARSE_VALUE_FAIL);
-      this.sendFailureLog(url, "WomaiParser", Parser.LOG_PARSE_VALUE_FAIL);
+      this.sendFailureLog(url, this.getClass().getSimpleName(), Parser.LOG_PARSE_VALUE_FAIL);
     }
 		return fruit;
 	}

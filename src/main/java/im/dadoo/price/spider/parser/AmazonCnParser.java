@@ -23,30 +23,24 @@ public class AmazonCnParser extends Parser {
     Fruit fruit = new Fruit();
     
     //首先抽取价格
-    HttpGet httpGet = new HttpGet(url);
-    httpGet.setConfig(this.config);
-    CloseableHttpResponse res = httpClient.execute(httpGet);
-    HttpEntity entity = res.getEntity();
-    String html = EntityUtils.toString(entity);
-		res.close();
+    String html = this.getHtml(url);
     Document doc = Jsoup.parse(html);
 		Elements es = doc.select("#actualPriceValue .priceLarge");
 		if (es.first() != null) {
 			String fragment = es.first().text();
 			if (fragment != null && !fragment.equals("")) {
-        Double value = this.parserValue(fragment.substring(2));
+        Double value = this.parsePrice(fragment.substring(2));
 				fruit.setPrice(value);
         fruit.setStock(1);
 			}
 		} else {
 			es = doc.select(".ddm-sbr-avail-title");
 			if (es.text() != null && es.text().equals("缺货登记")) {
-				logger.info(String.format("缺货:%s", url));
         fruit.setPrice(null);
 				fruit.setStock(0);
 			} else {
         logger.error(String.format("url:%s,%s", url, Parser.LOG_PARSE_STOCK_FAIL));
-        this.sendFailureLog(url, "AmazonCnParser", Parser.LOG_PARSE_STOCK_FAIL);
+        this.sendFailureLog(url, this.getClass().getSimpleName(), Parser.LOG_PARSE_STOCK_FAIL);
       }
 		}
 		return fruit;

@@ -23,7 +23,7 @@ public class YixunParser extends Parser {
             .timeout(Constants.TIME_OUT).get();
 		Elements es = doc.select("#sea_notify");
 		Fruit fruit = new Fruit();
-		if (es != null) {
+		if (es.first() != null) {
 			fruit.setStock(0);
 		} else {
 			fruit.setStock(1);
@@ -32,7 +32,7 @@ public class YixunParser extends Parser {
     if (es.first() != null) {
       List<Double> prices = new ArrayList<Double>();
       for (Element e : es) {
-        Double value = this.parserValue(e.text().substring(1));
+        Double value = this.parsePrice(e.text().substring(1));
         prices.add(value);
       }
       fruit.setPrice(Collections.min(prices));

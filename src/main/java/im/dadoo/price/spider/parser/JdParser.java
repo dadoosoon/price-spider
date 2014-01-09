@@ -35,7 +35,7 @@ public class JdParser extends Parser {
       }
     } else {
       logger.error("url:%s,%s", url, Parser.LOG_PARSE_STOCK_FAIL);
-      this.sendFailureLog(url, "JdParser", Parser.LOG_PARSE_STOCK_FAIL);
+      this.sendFailureLog(url, this.getClass().getSimpleName(), Parser.LOG_PARSE_STOCK_FAIL);
     }
 		
 		//然后解析价格
@@ -44,7 +44,7 @@ public class JdParser extends Parser {
     if (es.get(1) != null) {
       fragment = es.get(1).text();
       if (fragment != null && !fragment.equals("")) {
-        Double value = this.parserValue(fragment.substring(6));
+        Double value = this.parsePrice(fragment.substring(6));
         fruit.setPrice(value);
       }
       else {
@@ -52,7 +52,7 @@ public class JdParser extends Parser {
       }
     } else {
       logger.error("url:%s,%s", url, Parser.LOG_PARSE_VALUE_FAIL);
-      this.sendFailureLog(url, "JdParser", Parser.LOG_PARSE_VALUE_FAIL);
+      this.sendFailureLog(url, this.getClass().getSimpleName(), Parser.LOG_PARSE_VALUE_FAIL);
     }
 		return fruit;
 	}

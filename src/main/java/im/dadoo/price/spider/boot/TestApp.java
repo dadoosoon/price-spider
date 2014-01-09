@@ -3,9 +3,11 @@ package im.dadoo.price.spider.boot;
 
 import im.dadoo.price.spider.parser.AmazonCnParser;
 import im.dadoo.price.spider.parser.DangdangParser;
+import im.dadoo.price.spider.parser.GomeParser;
 import im.dadoo.price.spider.parser.Parser;
 import im.dadoo.price.spider.parser.SfbestParser;
 import im.dadoo.price.spider.parser.YhdParser;
+import im.dadoo.price.spider.parser.YixunParser;
 
 import java.io.IOException;
 import java.net.URL;
@@ -23,9 +25,13 @@ public class TestApp {
 
 	public static void main(String[] args) throws IOException {
 		ApplicationContext ctx = new ClassPathXmlApplicationContext(
-              new String[]{"price-spider-context.xml", "logger-client-context.xml"});
-    Parser parser = ctx.getBean(AmazonCnParser.class);
-    System.out.println(parser.parse("http://www.amazon.cn/dp/B0057UJ47I"));
-		
+              new String[]{"dadoo-mq-context.xml",
+                "logger-client-context.xml", 
+                "price-core-context.xml",
+                "price-spider-context.xml"});
+    Parser parser = ctx.getBean(GomeParser.class);
+    
+    System.out.println(parser.parse("http://www.gome.com.cn/product/9126470414.html"));
+		System.out.println(parser.getClass().getSimpleName());
 	}
 }

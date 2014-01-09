@@ -25,15 +25,15 @@ public class YhdParser extends Parser {
     String json = this.getHtml(String.format(PRICE_URL, pid));
 		Map<String, Object> map = this.mapper.readValue(json, Map.class);
 		//首先判断是否有货
-		if (map.containsKey("canSale")) {
-			if (map.get("canSale") == null || (Integer)map.get("canSale") == 0) {
+		if (map.containsKey("currentStockNum")) {
+			if (map.get("currentStockNum") == null || (Integer)map.get("currentStockNum") == 0) {
 				fruit.setStock(0);
 			} else {
 				fruit.setStock(1);
 			}
 		} else {
       logger.error("url:%s,%s", url, Parser.LOG_PARSE_STOCK_FAIL);
-      this.sendFailureLog(url, "YhdParser", Parser.LOG_PARSE_STOCK_FAIL);
+      this.sendFailureLog(url, this.getClass().getSimpleName(), Parser.LOG_PARSE_STOCK_FAIL);
 		}
 		if (map.containsKey("currentPrice")) {
 			Double value = null;
@@ -45,7 +45,7 @@ public class YhdParser extends Parser {
           value = (Double)rawValue;
         } else {
           logger.error("url:%s,%s", url, Parser.LOG_PARSE_VALUE_FAIL);
-          this.sendFailureLog(url, "YhdParser", Parser.LOG_PARSE_VALUE_FAIL);
+          this.sendFailureLog(url, this.getClass().getSimpleName(), Parser.LOG_PARSE_VALUE_FAIL);
         }
       }
 			fruit.setPrice(value);

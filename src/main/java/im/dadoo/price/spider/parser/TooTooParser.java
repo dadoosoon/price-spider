@@ -20,7 +20,7 @@ public class TooTooParser extends Parser {
 		Elements es = doc.select(".cuxiaojia span");
 		String fragment = es.first().ownText();
 		if (fragment != null) {
-      Double value = this.parserValue(fragment.substring(1));
+      Double value = this.parsePrice(fragment.substring(1));
 			fruit.setPrice(value);
 		} else {
 			fruit.setPrice(null);

@@ -14,7 +14,6 @@ import im.dadoo.price.core.service.RecordService;
 import im.dadoo.price.spider.cons.Constants;
 import im.dadoo.price.spider.parser.Fruit;
 import im.dadoo.price.spider.parser.Parser;
-import java.util.logging.Level;
 
 import org.apache.commons.math3.random.RandomDataGenerator;
 import org.slf4j.Logger;
@@ -67,7 +66,6 @@ public class Spider {
 	private Parser benlaiParser;
 	
 	public void start() {
-    logger.info("新一轮采集开始！！！！！");
 		List<Link> links = this.linkService.list();
     //乱序采集
 		links = this.disorderLinks(links);
@@ -116,7 +114,6 @@ public class Spider {
         }
 			}
 		}
-    logger.info("本轮采集结束！！！！！");
 	}
 	
 	private Parser choose(Seller seller) {
