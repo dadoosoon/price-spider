@@ -6,6 +6,7 @@ import im.dadoo.price.spider.parser.DangdangParser;
 import im.dadoo.price.spider.parser.GomeParser;
 import im.dadoo.price.spider.parser.Parser;
 import im.dadoo.price.spider.parser.SfbestParser;
+import im.dadoo.price.spider.parser.WomaiParser;
 import im.dadoo.price.spider.parser.YhdParser;
 import im.dadoo.price.spider.parser.YixunParser;
 
@@ -29,9 +30,8 @@ public class TestApp {
                 "logger-client-context.xml", 
                 "price-core-context.xml",
                 "price-spider-context.xml"});
-    Parser parser = ctx.getBean(GomeParser.class);
+    Parser parser = ctx.getBean(WomaiParser.class);
     
-    System.out.println(parser.parse("http://www.gome.com.cn/product/9126470414.html"));
-		System.out.println(parser.getClass().getSimpleName());
+    System.out.println(parser.parse("http://www.womai.com/Product-0-332935.htm"));
 	}
 }
