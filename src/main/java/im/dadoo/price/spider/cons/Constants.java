@@ -10,7 +10,7 @@ public final class Constants {
 	
 	public static final String TYPE_PARSE_FAIL = "parse-fail";
   
-  public static final Integer TIME_OUT = 60000;
+  public static final Integer TIME_OUT = 40000;
   
-  public static final Long PERIOD = 900000L;
+  public static final Long PERIOD = 600000L;
 }
