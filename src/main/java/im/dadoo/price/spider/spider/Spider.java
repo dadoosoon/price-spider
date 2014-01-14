@@ -13,6 +13,7 @@ import im.dadoo.price.spider.cons.Constants;
 import im.dadoo.price.spider.parser.Fruit;
 import im.dadoo.price.spider.parser.Parser;
 import java.io.IOException;
+import java.util.logging.Level;
 
 import org.apache.http.Consts;
 import org.apache.http.HttpEntity;
@@ -75,6 +76,7 @@ public class Spider {
 	@Autowired
 	private Parser benlaiParser;
 	
+  @SuppressWarnings("SleepWhileInLoop")
 	public void start() {
 
     Long beginTime = null;
@@ -117,6 +119,10 @@ public class Spider {
         e.printStackTrace();
         Log log = LogMaker.makeExceptionLog(Constants.SERVICE_NAME, description, e);
         this.loggerClient.send(log);
+      } finally {
+        try {
+          Thread.sleep(500);
+        } catch (InterruptedException ex) {}
       }
     }
 	}
