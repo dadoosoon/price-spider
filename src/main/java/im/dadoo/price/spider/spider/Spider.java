@@ -14,8 +14,20 @@ import im.dadoo.price.core.service.RecordService;
 import im.dadoo.price.spider.cons.Constants;
 import im.dadoo.price.spider.parser.Fruit;
 import im.dadoo.price.spider.parser.Parser;
+import java.io.IOException;
 
-import org.apache.commons.math3.random.RandomDataGenerator;
+import org.apache.http.Consts;
+import org.apache.http.HttpEntity;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +40,12 @@ public class Spider {
 	
 	@Autowired
 	private LoggerClient loggerClient;
+  
+  @Autowired
+  private CloseableHttpClient httpClient; 
+  
+  @Autowired
+  private ObjectMapper mapper;
 	
 	@Autowired
 	private LinkService linkService;
@@ -66,54 +84,49 @@ public class Spider {
 	private Parser benlaiParser;
 	
 	public void start() {
-		List<Link> links = this.linkService.list();
-    //乱序采集
-		links = this.disorderLinks(links);
-    Long delay = Constants.PERIOD / links.size();
+
     Long beginTime = null;
     Long parseEndTime = null;
     Long storeEndTime = null;
-		for (Link link : links) {
-			Parser parser = this.choose(link.getSeller());
-			if (parser != null) {
-				logger.info(String.format("开始采集%s网站数据,商品名%s,总量%d,url为%s", 
-						link.getSeller().getName(), link.getProduct().getName(), link.getAmount(), link.getUrl()));
-				beginTime = System.currentTimeMillis();
-				try {
-					Fruit fruit = parser.parse(link.getUrl());
+		while(true) {
+      Link link = this.getLink();
+      if (link == null) continue;
+      try {
+        Parser parser = this.choose(link.getSeller());
+        if (parser != null) {
+          logger.info(String.format("开始采集%s网站数据,商品名%s,总量%d,url为%s", 
+              link.getSeller().getName(), link.getProduct().getName(), link.getAmount(), link.getUrl()));
+          beginTime = System.currentTimeMillis();
+          Fruit fruit = parser.parse(link.getUrl());
 					parseEndTime = System.currentTimeMillis();
-					if (fruit != null) {
-						Double price = null;
+          if (fruit != null) {
+            Double price = null;
 						if (fruit.getPrice() != null) {
 							price = fruit.getPrice() / link.getAmount();
 						}
-						Record record = this.recordService.save(link, price, fruit.getStock());
-						storeEndTime = System.currentTimeMillis();
-						logger.info(String.format("采集%s网站结束,商品名为%s,单价为%2.2f,库存状况%d,采集耗时%d毫秒,存储耗时%d毫秒", 
+            Record record = Record.create(price, fruit.getStock(), link, parseEndTime);
+            Boolean success = this.save(record);
+            storeEndTime = System.currentTimeMillis();
+            if (success) {
+              logger.info(String.format("采集%s网站成功,商品名为%s,单价为%2.2f,库存状况%d,采集耗时%d毫秒,存储耗时%d毫秒", 
 								link.getSeller().getName(), link.getProduct().getName(), price, fruit.getStock(), 
                 parseEndTime - beginTime, storeEndTime - parseEndTime));
-						parser.sendExtractionLog(record, storeEndTime - parseEndTime);
-					}
-				} catch(Exception e1) {
-					storeEndTime = System.currentTimeMillis();
-					String description = String.format("采集%s结束,商品名为%s,价格解析失败,共耗时%d毫秒", 
-							link.getUrl(), link.getProduct().getName(), storeEndTime - beginTime);
-					logger.error(description);
-          e1.printStackTrace();
-					Log log = LogMaker.makeExceptionLog(Constants.SERVICE_NAME, description, e1);
-					this.loggerClient.send(log);
-				} finally {
-          Long period = storeEndTime - beginTime;
-          if (period < delay) {
-            try {
-              Thread.sleep(delay - period);
-            } catch (InterruptedException ex) {
-              ex.printStackTrace();
+              parser.sendExtractionLog(record, storeEndTime - parseEndTime);
+            } else {
+              logger.error("manager保存失败");
             }
           }
         }
-			}
-		}
+      } catch(Exception e) {
+        storeEndTime = System.currentTimeMillis();
+        String description = String.format("采集%s结束,商品名为%s,价格解析失败,共耗时%d毫秒", 
+            link.getUrl(), link.getProduct().getName(), storeEndTime - beginTime);
+        logger.error(description);
+        e.printStackTrace();
+        Log log = LogMaker.makeExceptionLog(Constants.SERVICE_NAME, description, e);
+        this.loggerClient.send(log);
+      }
+    }
 	}
 	
 	private Parser choose(Seller seller) {
@@ -142,14 +155,51 @@ public class Spider {
 			return null;
 		}
 	}
-	
-	private List<Link> disorderLinks(List<Link> links) {
-		RandomDataGenerator rdg = new RandomDataGenerator();
-		List<Link> result = new ArrayList<Link>(links.size());
-		int[] p = rdg.nextPermutation(links.size(), links.size());
-		for (int i = 0; i < p.length; i++) {
-			result.add(links.get(p[i]));
-		}
-		return result;
-	}
+  
+  private Link getLink() {
+    Link link = null;
+
+    RequestConfig config = RequestConfig.custom().setConnectTimeout(Constants.TIME_OUT)
+            .setSocketTimeout(Constants.TIME_OUT).build();
+    HttpGet httpGet = new HttpGet("http://localhost:8080/price-spider-manager/center");
+    httpGet.setConfig(config);
+    
+		CloseableHttpResponse res;
+    try {
+      res = this.httpClient.execute(httpGet);
+      HttpEntity entity = res.getEntity();
+      String json = EntityUtils.toString(entity);
+      res.close();
+      link = this.mapper.readValue(json, Link.class);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+		return link;
+  }
+  
+  private Boolean save(Record record) {
+    Boolean success = false;
+    RequestConfig config = RequestConfig.custom().setConnectTimeout(Constants.TIME_OUT)
+            .setSocketTimeout(Constants.TIME_OUT).build();
+    HttpPost httpPost = new HttpPost("http://localhost:8080/price-spider-manager/center");
+    httpPost.setConfig(config);
+    
+		CloseableHttpResponse res;
+    try {
+      List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+      String json = this.mapper.writeValueAsString(record);
+      
+      nvps.add(new BasicNameValuePair("record", json));
+      httpPost.setEntity(new UrlEncodedFormEntity(nvps, Consts.UTF_8));
+      res = this.httpClient.execute(httpPost);
+      HttpEntity entity = res.getEntity();
+      json = EntityUtils.toString(entity);
+      logger.info(json);
+      res.close();
+      success = this.mapper.readValue(json, Boolean.class);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return success;
+  }
 }

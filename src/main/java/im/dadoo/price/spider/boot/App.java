@@ -1,11 +1,8 @@
 package im.dadoo.price.spider.boot;
 
-import im.dadoo.price.spider.cons.Constants;
 import im.dadoo.price.spider.spider.Spider;
 
 import java.io.IOException;
-import java.util.Timer;
-import java.util.TimerTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,13 +21,6 @@ public class App {
                 "price-core-context.xml",
                 "price-spider-context.xml"});
     final Spider spider = (Spider) ctx.getBean("spider");
-    while (true) {
-      logger.info("新一轮采集开始！！！！！");
-      Long t1 = System.currentTimeMillis();
-      spider.start();
-      Long t2 = System.currentTimeMillis();
-      Double m = (t2 - t1) / 60000.0;
-      logger.info(String.format("本轮采集结束,总共耗时%f", m));
-    }
+    spider.start();
   }
 }
