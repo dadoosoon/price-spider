@@ -18,7 +18,6 @@ public class App {
     ApplicationContext ctx = new ClassPathXmlApplicationContext(
               new String[]{"dadoo-mq-context.xml",
                 "logger-client-context.xml", 
-                "price-core-context.xml",
                 "price-spider-context.xml"});
     final Spider spider = (Spider) ctx.getBean("spider");
     spider.start();

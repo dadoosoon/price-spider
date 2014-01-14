@@ -46,7 +46,7 @@ public abstract class Parser {
   }
   
   protected String getHtml(String url) throws IOException {
-    HttpGet httpGet = new HttpGet(url);
+    HttpGet httpGet = new HttpGet(url.trim());
     httpGet.setConfig(this.config);
     
 		CloseableHttpResponse res = this.httpClient.execute(httpGet);

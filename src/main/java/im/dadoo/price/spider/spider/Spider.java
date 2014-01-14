@@ -9,8 +9,6 @@ import im.dadoo.logger.client.LoggerClient;
 import im.dadoo.price.core.domain.Link;
 import im.dadoo.price.core.domain.Record;
 import im.dadoo.price.core.domain.Seller;
-import im.dadoo.price.core.service.LinkService;
-import im.dadoo.price.core.service.RecordService;
 import im.dadoo.price.spider.cons.Constants;
 import im.dadoo.price.spider.parser.Fruit;
 import im.dadoo.price.spider.parser.Parser;
@@ -46,12 +44,6 @@ public class Spider {
   
   @Autowired
   private ObjectMapper mapper;
-	
-	@Autowired
-	private LinkService linkService;
-	
-	@Autowired
-	private RecordService recordService;
 	
 	@Autowired
 	private Parser jdParser;
@@ -161,7 +153,7 @@ public class Spider {
 
     RequestConfig config = RequestConfig.custom().setConnectTimeout(Constants.TIME_OUT)
             .setSocketTimeout(Constants.TIME_OUT).build();
-    HttpGet httpGet = new HttpGet("http://localhost:8080/price-spider-manager/center");
+    HttpGet httpGet = new HttpGet(Constants.MANAGER_URL);
     httpGet.setConfig(config);
     
 		CloseableHttpResponse res;
@@ -181,7 +173,7 @@ public class Spider {
     Boolean success = false;
     RequestConfig config = RequestConfig.custom().setConnectTimeout(Constants.TIME_OUT)
             .setSocketTimeout(Constants.TIME_OUT).build();
-    HttpPost httpPost = new HttpPost("http://localhost:8080/price-spider-manager/center");
+    HttpPost httpPost = new HttpPost(Constants.MANAGER_URL);
     httpPost.setConfig(config);
     
 		CloseableHttpResponse res;
@@ -194,7 +186,6 @@ public class Spider {
       res = this.httpClient.execute(httpPost);
       HttpEntity entity = res.getEntity();
       json = EntityUtils.toString(entity);
-      logger.info(json);
       res.close();
       success = this.mapper.readValue(json, Boolean.class);
     } catch (IOException e) {
