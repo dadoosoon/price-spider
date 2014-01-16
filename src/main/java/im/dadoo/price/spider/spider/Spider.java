@@ -121,7 +121,7 @@ public class Spider {
         this.loggerClient.send(log);
       } finally {
         try {
-          Thread.sleep(500);
+          Thread.sleep(Constants.DELAY);
         } catch (InterruptedException ex) {}
       }
     }
