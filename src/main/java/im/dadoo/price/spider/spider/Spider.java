@@ -189,7 +189,7 @@ public class Spider {
     
 		CloseableHttpResponse res;
     try {
-      List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+      List<NameValuePair> nvps = new ArrayList<>();
       String json = this.mapper.writeValueAsString(record);
       
       nvps.add(new BasicNameValuePair("record", json));

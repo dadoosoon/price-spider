@@ -4,7 +4,7 @@
   <groupId>im.dadoo</groupId>
   <artifactId>price-spider</artifactId>
   <name>price-spider</name>
-  <version>0.0.3</version>
+  <version>0.0.4</version>
   <url>http://maven.apache.org</url>
   <build>
     <plugins>
@@ -32,6 +32,14 @@
             </configuration>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.3.2</version>
+        <configuration>
+          <source>1.7</source>
+          <target>1.7</target>
+        </configuration>
       </plugin>
     </plugins>
   </build>

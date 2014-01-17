@@ -70,6 +70,6 @@ public class TestApp {
 //    System.out.println(EntityUtils.toString(res.getEntity()));
 //    res.close();
     Parser parser = ctx.getBean(BenlaiParser.class);
-    System.out.println(parser.parse("http://www.benlai.com/item-509.html"));
+    System.out.println(parser.parse("http://www.benlai.com/item-1406.html"));
 	}
 }
