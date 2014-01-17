@@ -8,12 +8,15 @@ import im.dadoo.price.spider.cons.Constants;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import org.apache.http.Header;
 import org.apache.http.HttpEntity;
+import org.apache.http.client.config.CookieSpecs;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,29 +36,45 @@ public abstract class Parser {
 	@Autowired
 	protected LoggerClient loggerClient;
 	
-  @Autowired
-	protected CloseableHttpClient httpClient;
-	
-  protected RequestConfig config;
+	protected static CloseableHttpClient httpClient;
   
-	public abstract Fruit parse(String url) throws IOException;
-	
-  public Parser() {
-    config = RequestConfig.custom().setConnectTimeout(Constants.TIME_OUT)
-            .setSocketTimeout(Constants.TIME_OUT).build();
+	static {
+    RequestConfig globalConfig = RequestConfig.custom()
+        .setCookieSpec(CookieSpecs.BEST_MATCH)
+        .setConnectTimeout(Constants.TIME_OUT)
+        .setSocketTimeout(Constants.TIME_OUT)
+        .build();
+    httpClient = HttpClients.custom()
+        .setDefaultRequestConfig(globalConfig)
+        .build();
   }
+  
+  public Parser() {
+  }
+  
+  public abstract Fruit parse(String url) throws IOException;
   
   protected String getHtml(String url) throws IOException {
     HttpGet httpGet = new HttpGet(url.trim());
-    httpGet.setConfig(this.config);
     
-		CloseableHttpResponse res = this.httpClient.execute(httpGet);
+		CloseableHttpResponse res = Parser.httpClient.execute(httpGet);
 		HttpEntity entity = res.getEntity();
 		String html = EntityUtils.toString(entity);
     res.close();
     return html;
   }
   
+  protected String getHtml(String url, Map<String, String> headers) throws IOException {
+    HttpGet httpGet = new HttpGet(url.trim());
+    for (String key : headers.keySet()) {
+      httpGet.addHeader(key, headers.get(key));
+    }
+		CloseableHttpResponse res = Parser.httpClient.execute(httpGet);
+		HttpEntity entity = res.getEntity();
+		String html = EntityUtils.toString(entity);
+    res.close();
+    return html;
+  }
   protected Double parsePrice(String html) {
     Double price = null;
     try {
@@ -68,7 +87,7 @@ public abstract class Parser {
   }
   
 	public void sendExtractionLog(Record record, Long time) {
-		Map<String, Object> content = new HashMap<String, Object>();
+		Map<String, Object> content = new HashMap<>();
 		content.put(Parser.RECORD, record);
 		content.put(Parser.TIME, time);
 		Log log = new Log(Constants.SERVICE_NAME, 
@@ -77,7 +96,7 @@ public abstract class Parser {
 	}
   
   public void sendFailureLog(String url, String parserName, String description) {
-    Map<String, Object> content = new HashMap<String, Object>();
+    Map<String, Object> content = new HashMap<>();
     content.put("url", url);
     content.put("parserName", parserName);
     content.put("description", description);

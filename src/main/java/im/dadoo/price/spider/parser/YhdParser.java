@@ -1,8 +1,6 @@
 package im.dadoo.price.spider.parser;
 
 import java.io.IOException;
-
-import java.net.URL;
 import java.util.Map;
 
 import org.codehaus.jackson.map.ObjectMapper;

@@ -2,10 +2,6 @@ package im.dadoo.price.spider.parser;
 
 
 import java.io.IOException;
-import org.apache.http.HttpEntity;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.util.EntityUtils;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

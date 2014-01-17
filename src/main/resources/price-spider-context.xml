@@ -15,10 +15,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   <!-- 日志客户端配置 -->
   <bean id="loggerClient" class="im.dadoo.logger.client.impl.JmsLoggerClient" />
   
-  <!-- 下载服务器配置 -->
-  <bean id="httpClient" class="org.apache.http.impl.client.HttpClients" 
-        factory-method="createDefault" />
-  
   <bean id="mapper" class="org.codehaus.jackson.map.ObjectMapper" />
   
   <context:annotation-config />

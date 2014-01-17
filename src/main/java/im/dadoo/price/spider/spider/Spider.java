@@ -12,8 +12,8 @@ import im.dadoo.price.core.domain.Seller;
 import im.dadoo.price.spider.cons.Constants;
 import im.dadoo.price.spider.parser.Fruit;
 import im.dadoo.price.spider.parser.Parser;
+import im.dadoo.price.spider.parser.SuningParser;
 import java.io.IOException;
-import java.util.logging.Level;
 
 import org.apache.http.Consts;
 import org.apache.http.HttpEntity;
@@ -24,6 +24,7 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -39,9 +40,6 @@ public class Spider {
 	
 	@Autowired
 	private LoggerClient loggerClient;
-  
-  @Autowired
-  private CloseableHttpClient httpClient; 
   
   @Autowired
   private ObjectMapper mapper;
@@ -60,6 +58,9 @@ public class Spider {
 	
 	@Autowired
 	private Parser sfbestParser;
+  
+  @Autowired
+  private SuningParser suningParser;
 	
 	@Autowired
 	private Parser yixunParser;
@@ -75,6 +76,8 @@ public class Spider {
 	
 	@Autowired
 	private Parser benlaiParser;
+  
+  private final CloseableHttpClient httpClient = HttpClients.createDefault(); 
 	
   @SuppressWarnings("SleepWhileInLoop")
 	public void start() {
@@ -128,30 +131,32 @@ public class Spider {
 	}
 	
 	private Parser choose(Seller seller) {
-		if (seller.getName().equals("京东")) {
-			return this.jdParser;
-		} else if (seller.getName().equals("一号店")) {
-			return this.yhdParser;
-		} else if (seller.getName().equals("亚马逊中国")) {
-			return this.amazonCnParser;
-		} else if (seller.getName().equals("顺丰优选")) {
-			return this.sfbestParser;
-		} else if (seller.getName().equals("易迅")) {
-			return this.yixunParser;
-		} else if (seller.getName().equals("中粮我买网")) {
-			return this.womaiParser;
-		} else if (seller.getName().equals("国美在线")) {
-			return this.gomeParser;
-		} else if (seller.getName().equals("当当")) {
-			return this.dangdangParser;
-		} else if (seller.getName().equals("沱沱工社")) {
-			return this.tooTooParser;
-		} else if (seller.getName().equals("本来生活")) {
-			return this.benlaiParser;
-		}
-		else {
-			return null;
-		}
+    switch (seller.getName()) {
+      case "京东":
+        return this.jdParser;
+      case "一号店":
+        return this.yhdParser;
+      case "亚马逊中国":
+        return this.amazonCnParser;
+      case "顺丰优选":
+        return this.sfbestParser;
+      case "易迅":
+        return this.yixunParser;
+      case "中粮我买网":
+        return this.womaiParser;
+      case "国美在线":
+        return this.gomeParser;
+      case "当当":
+        return this.dangdangParser;
+      case "沱沱工社":
+        return this.tooTooParser;
+      case "本来生活":
+        return this.benlaiParser;
+      case "苏宁易购":
+        return this.suningParser;
+      default:
+        return null;
+    }
 	}
   
   private Link getLink() {
