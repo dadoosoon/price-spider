@@ -15,6 +15,7 @@ import im.dadoo.price.spider.parser.YixunParser;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Date;
 import java.util.Map;
 
 import org.apache.commons.lang3.ObjectUtils;
@@ -41,35 +42,9 @@ public class TestApp {
               new String[]{"dadoo-mq-context.xml",
                 "logger-client-context.xml", 
                 "price-spider-context.xml"});
-//    RequestConfig globalConfig = RequestConfig.custom()
-//        .setCookieSpec(CookieSpecs.BEST_MATCH)
-//        .setConnectTimeout(Constants.TIME_OUT)
-//        .setSocketTimeout(Constants.TIME_OUT)
-//        .build();
-//    CloseableHttpClient httpClient = HttpClients.custom()
-//        .setDefaultRequestConfig(globalConfig)
-//        .build();
-//    HttpGet httpGet = new HttpGet("http://product.suning.com/105077896.html");
-//    
-//    
-//    CloseableHttpResponse res = httpClient.execute(httpGet);
-//    System.out.println(EntityUtils.toString(res.getEntity()));
-//    res.close();
-//
-//    httpGet = new HttpGet("http://product.suning.com/SNProductStatusView?storeId=10052&catalogId=10051&productId=17857647&cityId=9017&_=0");
-//    httpGet.addHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1700.76 Safari/537.36");
-//    httpGet.addHeader("Connection", "keep-alive");
-//    httpGet.addHeader("Referer", "http://product.suning.com/105077896.html");
-//    httpGet.addHeader("X-Requested-With", "XMLHttpRequest");
-//    httpGet.addHeader("Pragma", "no-cache");
-//    httpGet.addHeader("Accept", "application/json, text/javascript, */*");
-//    httpGet.addHeader("Accept-Encoding", "gzip,deflate,sdch");
-//    httpGet.addHeader("Accept-Language", "zh-CN,zh;q=0.8,en-US;q=0.6,en;q=0.4");
-//
-//    res = httpClient.execute(httpGet);
-//    System.out.println(EntityUtils.toString(res.getEntity()));
-//    res.close();
-    Parser parser = ctx.getBean(BenlaiParser.class);
-    System.out.println(parser.parse("http://www.benlai.com/item-1406.html"));
+
+    Parser parser = ctx.getBean(YhdParser.class);
+    System.out.println(parser.parse("http://item.yhd.com/item/7961486"));
+    System.out.println(new Date(1390278932845L));
 	}
 }
