@@ -21,19 +21,26 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class SfbestParser extends Parser {
+  
+  private static final String PID_PREFIX = "cartAdd(";
 	
 	private static final String PRICE_URL = "http://www.sfbest.com/product/price";
 	
 	private static final String STOCK_URL = "http://www.sfbest.com/product/stock";
 	
+  @Override
 	public Fruit parse(String url) throws IOException {
 		Fruit fruit = new Fruit();
-		String[] ts = url.split("/");
-		String pid = ts[ts.length - 1].split("\\.")[0];
+    //获取product_id
+    String html = this.getHtml(url);
+    Integer i1 = html.indexOf(PID_PREFIX);
+    Integer i2 = html.substring(i1).indexOf(",");
+    String pid = html.substring(i1 + PID_PREFIX.length(), i1 + i2);
+
 		//首先判断是否有货
 		HttpPost httpPost = new HttpPost(STOCK_URL);
-		List<NameValuePair> nvps = new ArrayList<NameValuePair>();
-		nvps.add(new BasicNameValuePair("product_id", pid.substring(pid.length() - 5)));
+		List<NameValuePair> nvps = new ArrayList<>();
+		nvps.add(new BasicNameValuePair("product_id", pid));
 		httpPost.setEntity(new UrlEncodedFormEntity(nvps));
 		CloseableHttpResponse res = Parser.httpClient.execute(httpPost);
 		HttpEntity entity = res.getEntity();
@@ -53,8 +60,8 @@ public class SfbestParser extends Parser {
 		
 		//然后解析价格
 		httpPost = new HttpPost(PRICE_URL);
-		nvps = new ArrayList<NameValuePair>();
-		nvps.add(new BasicNameValuePair("product_id", pid.substring(pid.length() - 5)));
+		nvps = new ArrayList<>();
+		nvps.add(new BasicNameValuePair("product_id", pid));
 		httpPost.setEntity(new UrlEncodedFormEntity(nvps));
 		res = Parser.httpClient.execute(httpPost);
 		entity = res.getEntity();
@@ -62,7 +69,7 @@ public class SfbestParser extends Parser {
 		Document doc = Jsoup.parseBodyFragment(fragment);
 		Elements es = doc.select("#price font");
     if (es.first() != null) {
-      String html = es.first().text();
+      html = es.first().text();
       if (html != null && !html.equals("")) {
         Double value = this.parsePrice(html);
         fruit.setPrice(value);
