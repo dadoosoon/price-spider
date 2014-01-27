@@ -30,7 +30,7 @@ public class YixunParser extends Parser {
 		}
 		es = doc.select(".xprice_val");
     if (es.first() != null) {
-      List<Double> prices = new ArrayList<Double>();
+      List<Double> prices = new ArrayList<>();
       for (Element e : es) {
         Double value = this.parsePrice(e.text().substring(1));
         prices.add(value);
