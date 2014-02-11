@@ -101,12 +101,12 @@ public class Spider {
 						if (fruit.getPrice() != null) {
 							price = fruit.getPrice() / link.getAmount();
 						}
-            Record record = Record.create(price, fruit.getStock(), link, parseEndTime);
+            Record record = Record.create(price, fruit.getStock(), null, link, parseEndTime);
             Boolean success = this.save(record);
             storeEndTime = System.currentTimeMillis();
             if (success) {
-              logger.info(String.format("采集%s网站成功,商品名为%s,单价为%2.2f,库存状况%d,采集耗时%d毫秒,存储耗时%d毫秒", 
-								link.getSeller().getName(), link.getProduct().getName(), price, fruit.getStock(), 
+              logger.info(String.format("采集%s网站成功,商品名为%s,单价为%2.2f,库存状况%d,促销信息%s,采集耗时%d毫秒,存储耗时%d毫秒", 
+								link.getSeller().getName(), link.getProduct().getName(), price, fruit.getStock(), null, 
                 parseEndTime - beginTime, storeEndTime - parseEndTime));
               parser.sendExtractionLog(record, storeEndTime - parseEndTime);
             } else {

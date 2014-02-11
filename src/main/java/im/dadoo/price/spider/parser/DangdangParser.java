@@ -44,7 +44,10 @@ public class DangdangParser extends Parser {
 		//接下来解析价格
 		String html = this.getHtml(url);
 		Document doc = Jsoup.parse(html);
-		Elements es = doc.select("#salePriceTag");
+    Elements es = doc.select("#promo_price");
+    if (es.first() == null) {
+      es = doc.select("#salePriceTag");
+    }
 		String fragment = es.first().text();
 		
 		if (fragment != null && !fragment.equals("")) {
