@@ -12,8 +12,11 @@ public class BenlaiParser extends Parser{
 
   private static final String REAL_URL_TPL = "http://www.benlai.com/Products/GetProductPrice?SysNo=%s";
   
-  @Autowired
   private ObjectMapper mapper;
+  
+  public BenlaiParser() {
+    this.mapper = new ObjectMapper();
+  }
   
 	@Override
 	public Fruit parse(String url) throws IOException {

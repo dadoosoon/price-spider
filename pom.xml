@@ -4,7 +4,7 @@
 
   <groupId>im.dadoo</groupId>
   <artifactId>price-spider</artifactId>
-  <version>0.0.6</version>
+  <version>0.1.0</version>
   <packaging>jar</packaging>
 
   <name>price-spider</name>
@@ -79,8 +79,8 @@
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>price-core-domain</artifactId>
-      <version>0.0.3</version>
+      <artifactId>price-core</artifactId>
+      <version>0.1.0</version>
     </dependency>
   </dependencies>
   

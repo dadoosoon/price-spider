@@ -17,8 +17,11 @@ public class DangdangParser extends Parser {
 	private static final String STOCK_URL = 
 			"http://product.dangdang.com/pricestock/callback.php?type=stockv2&product_id=%s";
   
-  @Autowired
   private ObjectMapper mapper;
+  
+  public DangdangParser() {
+    this.mapper = new ObjectMapper();
+  }
   
 	public Fruit parse(String url) throws IOException {
 		Fruit fruit = new Fruit();

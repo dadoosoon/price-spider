@@ -18,8 +18,11 @@ public class SuningParser extends Parser{
 	
   private static final String STOCK_URL_TPL = "http://product.suning.com/SNProductSaleView?storeId=10052&catalogId=10051&productId=%s&cityId=9017&salesOrg=%s&deptNo=%s&vendor=%s";
   
-  @Autowired
   private ObjectMapper mapper;
+  
+  public SuningParser() {
+    this.mapper = new ObjectMapper();
+  }
   
   @Override
   public Fruit parse(String url) throws IOException {

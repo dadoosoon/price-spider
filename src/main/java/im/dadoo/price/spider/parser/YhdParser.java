@@ -12,9 +12,12 @@ public class YhdParser extends Parser {
 	
 	private static final String PRICE_URL = "http://busystock.i.yihaodian.com/restful/detail?mcsite=1&provinceId=2&pmId=%s";
 	
-	@Autowired
 	private ObjectMapper mapper;
 	
+  public YhdParser() {
+    this.mapper = new ObjectMapper();
+  }
+  
 	public Fruit parse(String url) throws IOException {
 		Fruit fruit = new Fruit();
 		String[] ts = url.split("/");

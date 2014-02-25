@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class GomeParser extends Parser {
 	
-  @Autowired
   private ObjectMapper mapper;
 	
   private static final String PID_PREFIX = "prdId:";
@@ -34,6 +33,10 @@ public class GomeParser extends Parser {
           + "zoneId=11010000&"
           + "sid=%s&"
           + "pid=%s&";
+  
+  public GomeParser() {
+    this.mapper = new ObjectMapper();
+  }
   
 	public Fruit parse(String url) throws IOException {
 		Fruit fruit = new Fruit();
