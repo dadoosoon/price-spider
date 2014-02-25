@@ -24,12 +24,8 @@ public class BenlaiParser extends Parser{
     
     Integer i1 = url.indexOf("-");
     Integer i2 = url.indexOf(".html");
-    System.out.println(i1);
-    System.out.println(i2);
     String pid = url.substring(i1 + 1, i2);
-    System.out.println(pid);
     String json = this.getHtml(String.format(REAL_URL_TPL, pid));
-    System.out.println(json);
     Map<String, Object> map = this.mapper.readValue(json, Map.class);
     if (map != null && map.containsKey("currentPrice")) {
       fruit.setPrice((Double)map.get("currentPrice"));
