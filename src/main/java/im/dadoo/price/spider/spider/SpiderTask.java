@@ -58,13 +58,13 @@ public class SpiderTask implements Runnable {
   private Parser parser;
   
   @Resource
+  private ParserSelector selector;
+  
+  @Resource
 	private LoggerClient loggerClient;
   
   @Resource
   private ObjectMapper mapper;
-  
-  @Resource
-  private SellerService sellerService;
   
   @Resource
   private ProductService productService;
@@ -75,7 +75,7 @@ public class SpiderTask implements Runnable {
   public void init(Seller seller) {
     this.seller = seller;
     this.httpClient = HttpClients.createDefault();
-    this.parser = ParserSelector.select(seller.getId());
+    this.parser = this.selector.select(seller.getId());
   }
   
   @Override
@@ -127,8 +127,8 @@ public class SpiderTask implements Runnable {
               this.seller.getName(), product.getName(), link.getUrl(), storeEndTime - beginTime);
           logger.error(description);
           e.printStackTrace();
-          //Log log = LogMaker.makeExceptionLog(Constants.SERVICE_NAME, description, e);
-          //this.loggerClient.send(log);
+          Log log = LogMaker.makeExceptionLog(Constants.SERVICE_NAME, description, e);
+          this.loggerClient.send(log);
         } finally {
           try {
             Thread.sleep(Constants.DELAY);

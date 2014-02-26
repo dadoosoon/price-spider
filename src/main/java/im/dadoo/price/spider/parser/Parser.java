@@ -8,7 +8,6 @@ import im.dadoo.price.spider.cons.Constants;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.config.CookieSpecs;
 import org.apache.http.client.config.RequestConfig;
@@ -84,6 +83,12 @@ public abstract class Parser {
       e.printStackTrace();
     }
     return price;
+  }
+  
+  public String parsePrefix(String html, String prefix, String suffix) {
+    Integer index1 = html.indexOf(prefix) + prefix.length();
+		Integer index2 = html.substring(index1).indexOf(suffix);
+		return html.substring(index1, index1 + index2);
   }
   
 	public void sendExtractionLog(Record record, Long time) {

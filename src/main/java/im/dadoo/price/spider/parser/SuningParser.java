@@ -3,25 +3,28 @@ package im.dadoo.price.spider.parser;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import javax.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class SuningParser extends Parser{
   
   private static final String PID_PREFIX = "productId\":\"";
+  
+  private static final String PID_SUFFIX = "\"";
 	
   private static final String PRICE_URL_TPL = "http://product.suning.com/SNProductStatusView?storeId=10052&catalogId=10051&productId=%s&cityId=9017&_=%d";
 	
   private static final String STOCK_URL_TPL = "http://product.suning.com/SNProductSaleView?storeId=10052&catalogId=10051&productId=%s&cityId=9017&salesOrg=%s&deptNo=%s&vendor=%s";
   
+  @Resource
   private ObjectMapper mapper;
   
   public SuningParser() {
-    this.mapper = new ObjectMapper();
+    super();
   }
   
   @Override
@@ -29,7 +32,7 @@ public class SuningParser extends Parser{
     Fruit fruit = new Fruit();
     
     String html = this.getHtml(url);
-    String pid = this.parsePrefix(html, PID_PREFIX);
+    String pid = this.parsePrefix(html, PID_PREFIX, PID_SUFFIX);
     
     //解析价格
     String priceUrl = String.format(PRICE_URL_TPL, pid, 0);
@@ -73,11 +76,5 @@ public class SuningParser extends Parser{
     
 		return fruit;
 	}
-
-  private String parsePrefix(String html, String prefix) {
-    Integer index1 = html.indexOf(prefix) + prefix.length();
-		Integer index2 = html.substring(index1).indexOf("\"");
-		return html.substring(index1, index1 + index2);
-  }
   
 }

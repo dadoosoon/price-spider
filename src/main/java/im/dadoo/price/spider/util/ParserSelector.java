@@ -6,51 +6,91 @@
 
 package im.dadoo.price.spider.util;
 
-import im.dadoo.price.spider.parser.AmazonCnParser;
-import im.dadoo.price.spider.parser.BenlaiParser;
-import im.dadoo.price.spider.parser.DangdangParser;
-import im.dadoo.price.spider.parser.GomeParser;
-import im.dadoo.price.spider.parser.JdParser;
 import im.dadoo.price.spider.parser.Parser;
-import im.dadoo.price.spider.parser.SfbestParser;
-import im.dadoo.price.spider.parser.SuningParser;
-import im.dadoo.price.spider.parser.TooTooParser;
-import im.dadoo.price.spider.parser.WomaiParser;
-import im.dadoo.price.spider.parser.YhdParser;
-import im.dadoo.price.spider.parser.YixunParser;
+import javax.annotation.Resource;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author codekitten
  */
+@Component
 public final class ParserSelector {
   
-  private ParserSelector() {}
+  @Resource
+  private Parser jdParser;
   
-  public static Parser select(Integer sellerId) {
+  @Resource
+  private Parser amazonCnParser;
+  
+  @Resource
+  private Parser yhdParser;
+  
+  @Resource
+  private Parser womaiParser;
+  
+  @Resource
+  private Parser sfbestParser;
+  
+  @Resource
+  private Parser yixunParser;
+  
+  @Resource
+  private Parser suningParser;
+  
+  @Resource
+  private Parser gomeParser;
+  
+  @Resource
+  private Parser dangdangParser;
+  
+  @Resource
+  private Parser tootooParser;
+  
+  @Resource
+  private Parser benlaiParser;
+  
+  @Resource
+  private Parser jumeiParser;
+  
+  @Resource
+  private Parser lefengParser;
+  
+  @Resource
+  private Parser yintaiParser;
+  
+  public ParserSelector() {}
+  
+  public Parser select(Integer sellerId) {
     switch(sellerId) {
       case 1:
-        return new JdParser();
+        return this.jdParser;
       case 2:
-        return new AmazonCnParser();
+        return this.amazonCnParser;
       case 3:
-        return new YhdParser();
+        return this.yhdParser;
       case 4:
-        return new WomaiParser();
+        return this.womaiParser;
       case 5:
-        return new SfbestParser();
+        return this.sfbestParser;
       case 6:
-        return new YixunParser();
+        return this.yixunParser;
       case 7:
-        return new SuningParser();
+        return this.suningParser;
       case 8:
-        return new GomeParser();
+        return this.gomeParser;
       case 9:
-        return new DangdangParser();
+        return this.dangdangParser;
       case 10:
-        return new TooTooParser();
+        return this.tootooParser;
       case 11:
-        return new BenlaiParser();
+        return this.benlaiParser;
+      case 12:
+        return this.jumeiParser;
+      case 13:
+        return this.lefengParser;
+      case 14:
+        return this.yintaiParser;
       default:
         return null;
     }

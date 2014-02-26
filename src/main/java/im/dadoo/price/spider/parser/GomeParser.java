@@ -3,14 +3,15 @@ package im.dadoo.price.spider.parser;
 
 import java.io.IOException;
 import java.util.Map;
+import javax.annotation.Resource;
 import org.codehaus.jackson.map.ObjectMapper;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class GomeParser extends Parser {
 	
+  @Resource
   private ObjectMapper mapper;
 	
   private static final String PID_PREFIX = "prdId:";
@@ -22,6 +23,9 @@ public class GomeParser extends Parser {
   
   private static final String STOCK_PREFIX = "result:\"";
   private static final String PRICE_PREFIX = "price:\"";
+  
+  private static final String SUFFIX = "\"";
+  
   private static final String NEW_URL_TPL = 
           "http://g.gome.com.cn/ec/homeus/browse/exactMethod.jsp?"
           + "callback=exact&"
@@ -35,7 +39,7 @@ public class GomeParser extends Parser {
           + "pid=%s&";
   
   public GomeParser() {
-    this.mapper = new ObjectMapper();
+    super();
   }
   
 	public Fruit parse(String url) throws IOException {
@@ -43,18 +47,17 @@ public class GomeParser extends Parser {
     
     String html = this.getHtml(url);
 		
-		String pid = this.parsePrefix(html, PID_PREFIX);
-    String sid = this.parsePrefix(html, SID_PREFIX);
-    String goodsNo = this.parsePrefix(html, GOODS_NO_PREFIX);
-    String siteId = this.parsePrefix(html, SITE_ID_PREFIX);
-    String skuType = this.parsePrefix(html, SKU_TYPE_PREFIX);
-    String shelf = this.parsePrefix(html, SHELF_PREFIX);
+		String pid = this.parsePrefix(html, PID_PREFIX, SUFFIX);
+    String sid = this.parsePrefix(html, SID_PREFIX, SUFFIX);
+    String goodsNo = this.parsePrefix(html, GOODS_NO_PREFIX, SUFFIX);
+    String siteId = this.parsePrefix(html, SITE_ID_PREFIX, SUFFIX);
+    String skuType = this.parsePrefix(html, SKU_TYPE_PREFIX, SUFFIX);
+    String shelf = this.parsePrefix(html, SHELF_PREFIX, SUFFIX);
     
     String newUrl = String.format(NEW_URL_TPL, goodsNo, siteId, skuType, shelf, sid, pid);
     String fragment = this.getHtml(newUrl);
 		
     fragment = fragment.substring(6, fragment.length() - 3).trim();
-    System.out.println(fragment);
     
     Map<String, String> map = this.mapper.readValue(fragment, Map.class);
     if (map != null) {
@@ -85,10 +88,4 @@ public class GomeParser extends Parser {
     }
 		return fruit;
 	}
-
-  private String parsePrefix(String html, String prefix) {
-    Integer index1 = html.indexOf(prefix) + prefix.length();
-		Integer index2 = html.substring(index1).indexOf("\"");
-		return html.substring(index1, index1 + index2);
-  }
 }

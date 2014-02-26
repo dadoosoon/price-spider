@@ -38,7 +38,7 @@ public class YixunParser extends Parser {
       fruit.setPrice(Collections.min(prices));
     } else {
       logger.error("url:%s,%s", url, Parser.LOG_PARSE_VALUE_FAIL);
-      this.sendFailureLog(url, "YixunParser", Parser.LOG_PARSE_VALUE_FAIL);
+      this.sendFailureLog(url, this.getClass().getSimpleName(), Parser.LOG_PARSE_VALUE_FAIL);
     }
 		
 		return fruit;

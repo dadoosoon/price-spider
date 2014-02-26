@@ -28,15 +28,14 @@ public class SfbestParser extends Parser {
 	
 	private static final String STOCK_URL = "http://www.sfbest.com/product/stock";
 	
+  private static final String SUFFIX = ",";
+  
   @Override
 	public Fruit parse(String url) throws IOException {
 		Fruit fruit = new Fruit();
     //获取product_id
     String html = this.getHtml(url);
-    Integer i1 = html.indexOf(PID_PREFIX);
-    Integer i2 = html.substring(i1).indexOf(",");
-    String pid = html.substring(i1 + PID_PREFIX.length(), i1 + i2);
-
+    String pid = this.parsePrefix(html, PID_PREFIX, SUFFIX);
 		//首先判断是否有货
 		HttpPost httpPost = new HttpPost(STOCK_URL);
 		List<NameValuePair> nvps = new ArrayList<>();

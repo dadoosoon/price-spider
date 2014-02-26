@@ -2,9 +2,9 @@ package im.dadoo.price.spider.parser;
 
 import java.io.IOException;
 import java.util.Map;
+import javax.annotation.Resource;
 import org.codehaus.jackson.map.ObjectMapper;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -12,10 +12,11 @@ public class BenlaiParser extends Parser{
 
   private static final String REAL_URL_TPL = "http://www.benlai.com/Products/GetProductPrice?SysNo=%s";
   
+  @Resource
   private ObjectMapper mapper;
   
   public BenlaiParser() {
-    this.mapper = new ObjectMapper();
+    super();
   }
   
 	@Override

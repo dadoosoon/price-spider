@@ -3,24 +3,25 @@ package im.dadoo.price.spider.parser;
 
 import java.io.IOException;
 import java.util.Map;
+import javax.annotation.Resource;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class DangdangParser extends Parser {
 	
-	private static final String STOCK_URL = 
+	private static final String STOCK_URL_TPL = 
 			"http://product.dangdang.com/pricestock/callback.php?type=stockv2&product_id=%s";
   
+  @Resource
   private ObjectMapper mapper;
   
   public DangdangParser() {
-    this.mapper = new ObjectMapper();
+    super();
   }
   
 	public Fruit parse(String url) throws IOException {
@@ -28,7 +29,7 @@ public class DangdangParser extends Parser {
 		//首先判断是否有货
 		String[] ts = url.split("/");
 		String pid = ts[ts.length - 1].split("\\.")[0];
-    String json = this.getHtml(String.format(STOCK_URL, pid));
+    String json = this.getHtml(String.format(STOCK_URL_TPL, pid));
 		
     //首先判断用户页面是否有效
     Map<String, Object> map = this.mapper.readValue(json, Map.class);
