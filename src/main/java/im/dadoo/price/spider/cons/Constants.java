@@ -12,9 +12,7 @@ public final class Constants {
   
   public static final Integer TIME_OUT = 40000;
   
-  public static final Long DELAY = 15000L;
+  public static final String MANAGER_URL = "http://price.spider.manager.dadoo.im/seller/%d";
   
-  //public static final String MANAGER_URL = "http://price.spider.manager.dadoo.im/seller/%d";
-  
-  public static final String MANAGER_URL = "http://localhost:8080/price-spider-manager/seller/%d";
+  //public static final String MANAGER_URL = "http://localhost:8080/price-spider-manager/seller/%d";
 }

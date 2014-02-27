@@ -14,7 +14,6 @@ import im.dadoo.price.core.domain.Product;
 import im.dadoo.price.core.domain.Record;
 import im.dadoo.price.core.domain.Seller;
 import im.dadoo.price.core.service.ProductService;
-import im.dadoo.price.core.service.SellerService;
 import im.dadoo.price.spider.cons.Constants;
 import im.dadoo.price.spider.parser.Fruit;
 import im.dadoo.price.spider.parser.Parser;
@@ -131,7 +130,7 @@ public class SpiderTask implements Runnable {
           this.loggerClient.send(log);
         } finally {
           try {
-            Thread.sleep(Constants.DELAY);
+            Thread.sleep(seller.getDelay());
           } catch (InterruptedException ex) {}
         }
       }

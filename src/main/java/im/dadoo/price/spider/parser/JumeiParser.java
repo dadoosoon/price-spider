@@ -6,7 +6,6 @@
 
 package im.dadoo.price.spider.parser;
 
-import im.dadoo.price.spider.cons.Constants;
 import java.io.IOException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -24,11 +23,12 @@ public class JumeiParser extends Parser{
   public Fruit parse(String url) throws IOException {
     Fruit fruit = new Fruit();
     
-    Document doc = Jsoup.connect(url).timeout(Constants.TIME_OUT).get();
+    String html = this.getHtml(url);
+    Document doc = Jsoup.parse(html);
     Elements es = doc.select("#mall_price");
     if (es.first() != null) {
-      String html = es.first().text();
-      fruit.setPrice(this.parsePrice(html));
+      String fragment = es.first().text();
+      fruit.setPrice(this.parsePrice(fragment));
     } else {
       logger.error("url:%s,%s", url, Parser.LOG_PARSE_VALUE_FAIL);
       this.sendFailureLog(url, this.getClass().getSimpleName(), Parser.LOG_PARSE_VALUE_FAIL);

@@ -77,7 +77,9 @@ public abstract class Parser {
   protected Double parsePrice(String html) {
     Double price = null;
     try {
-      price = Double.parseDouble(html);
+      if (html != null && !html.trim().isEmpty()) {
+        price = Double.parseDouble(html.trim());
+      }
     } catch(NumberFormatException e) {
       logger.error("价格解析失败");
       e.printStackTrace();

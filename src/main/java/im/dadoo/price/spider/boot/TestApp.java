@@ -48,7 +48,7 @@ public class TestApp {
                 "price-spider-context.xml",
                 "price-core-context.xml"});
 
-    Parser parser = ctx.getBean(WomaiParser.class);
-    System.out.println(parser.parse("http://www.womai.com/Product-0-554010.htm"));
+    Parser parser = ctx.getBean(JdParser.class);
+    System.out.println(parser.parse("http://item.jd.com/781603.html"));
 	}
 }

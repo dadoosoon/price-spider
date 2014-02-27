@@ -36,7 +36,12 @@ public class JdParser extends Parser {
       if (list != null && !list.isEmpty()) {
         Map<String, Object> map = list.get(0);
         if (map.containsKey("p")) {
-          fruit.setPrice(this.parsePrice((String)map.get("p")));
+          Double price = this.parsePrice((String)map.get("p"));
+          if (price < 0.0) {
+            fruit.setPrice(null);
+          } else {
+            fruit.setPrice(price);
+          }
         } else {
           logger.error("url:%s,%s", url, Parser.LOG_PARSE_VALUE_FAIL);
           this.sendFailureLog(url, this.getClass().getSimpleName(), Parser.LOG_PARSE_VALUE_FAIL);
