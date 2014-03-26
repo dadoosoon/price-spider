@@ -35,10 +35,10 @@ public class DangdangParser extends Parser {
     Map<String, Object> map = this.mapper.readValue(json, Map.class);
     if (map.containsKey("havestock")) {
       Object havestock = map.get("havestock");
-      if (havestock instanceof String && ((String)havestock).equals("nostock")) {
-        fruit.setStock(0);
-      } else {
+      if (havestock instanceof String && ((String)havestock).equals("true")) {
         fruit.setStock(1);
+      } else {
+        fruit.setStock(0);
       }
     } else {
       logger.error("url:%s,%s", url, Parser.LOG_PARSE_STOCK_FAIL);
@@ -51,6 +51,9 @@ public class DangdangParser extends Parser {
     Elements es = doc.select("#promo_price");
     if (es.first() == null) {
       es = doc.select("#salePriceTag");
+      if (es.first() == null) {
+        return fruit;
+      }
     }
 		String fragment = es.first().text();
 		

@@ -12,30 +12,14 @@ import im.dadoo.price.spider.parser.LefengParser;
 import im.dadoo.price.spider.parser.Parser;
 import im.dadoo.price.spider.parser.SfbestParser;
 import im.dadoo.price.spider.parser.SuningParser;
+import im.dadoo.price.spider.parser.TootooParser;
 import im.dadoo.price.spider.parser.WomaiParser;
 import im.dadoo.price.spider.parser.YhdParser;
 import im.dadoo.price.spider.parser.YintaiParser;
 import im.dadoo.price.spider.parser.YixunParser;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.Date;
-import java.util.Map;
 
-import org.apache.commons.lang3.ObjectUtils;
-import org.apache.commons.math3.random.RandomDataGenerator;
-import org.apache.http.Header;
-import org.apache.http.HttpEntity;
-import org.apache.http.client.config.CookieSpecs;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -48,7 +32,7 @@ public class TestApp {
                 "price-spider-context.xml",
                 "price-core-context.xml"});
 
-    Parser parser = ctx.getBean(JdParser.class);
-    System.out.println(parser.parse("http://item.jd.com/781603.html"));
+    Parser parser = ctx.getBean(TootooParser.class);
+    System.out.println(parser.parse("http://www.tootoo.cn/product-1045567.html"));
 	}
 }
