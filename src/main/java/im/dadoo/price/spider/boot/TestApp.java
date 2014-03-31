@@ -1,6 +1,8 @@
 package im.dadoo.price.spider.boot;
 
 
+import im.dadoo.price.core.configuration.PriceCoreContext;
+import im.dadoo.price.spider.configuration.PriceSpiderContext;
 import im.dadoo.price.spider.cons.Constants;
 import im.dadoo.price.spider.parser.AmazonCnParser;
 import im.dadoo.price.spider.parser.BenlaiParser;
@@ -20,19 +22,20 @@ import im.dadoo.price.spider.parser.YixunParser;
 
 import java.io.IOException;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class TestApp {
 
 	public static void main(String[] args) throws IOException, InterruptedException {
-		ApplicationContext ctx = new ClassPathXmlApplicationContext(
-              new String[]{"dadoo-mq-context.xml",
-                "logger-client-context.xml", 
-                "price-spider-context.xml",
-                "price-core-context.xml"});
-
-    Parser parser = ctx.getBean(TootooParser.class);
-    System.out.println(parser.parse("http://www.tootoo.cn/product-1045567.html"));
+//		ApplicationContext ctx = new ClassPathXmlApplicationContext(
+//              new String[]{"dadoo-mq-context.xml",
+//                "logger-client-context.xml", 
+//                "price-spider-context.xml",
+//                "price-core-context.xml"});
+    AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(
+            PriceCoreContext.class, 
+            PriceSpiderContext.class);
+    Parser parser = ctx.getBean(GomeParser.class);
+    System.out.println(parser.parse("http://www.gome.com.cn/product/9124316358.html"));
 	}
 }

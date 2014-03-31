@@ -1,7 +1,6 @@
 package im.dadoo.price.spider.parser;
 
 import im.dadoo.log.Log;
-import im.dadoo.logger.client.LoggerClient;
 import im.dadoo.price.core.domain.Record;
 import im.dadoo.price.spider.cons.Constants;
 
@@ -32,8 +31,8 @@ public abstract class Parser {
   
   public static final String LOG_PARSE_STOCK_FAIL = "解析库存失败,可能页面已被修改";
   
-	@Autowired
-	protected LoggerClient loggerClient;
+//	@Autowired
+//	protected LoggerClient loggerClient;
 	
 	protected static CloseableHttpClient httpClient;
   
@@ -97,9 +96,9 @@ public abstract class Parser {
 		Map<String, Object> content = new HashMap<>();
 		content.put(Parser.RECORD, record);
 		content.put(Parser.TIME, time);
-		Log log = new Log(Constants.SERVICE_NAME, 
-				Constants.TYPE_EXTRACTION, System.currentTimeMillis(), content);
-		this.loggerClient.send(log);
+//		Log log = new Log(Constants.SERVICE_NAME, 
+//				Constants.TYPE_EXTRACTION, System.currentTimeMillis(), content);
+		//this.loggerClient.send(log);
 	}
   
   public void sendFailureLog(String url, String parserName, String description) {
@@ -107,8 +106,8 @@ public abstract class Parser {
     content.put("url", url);
     content.put("parserName", parserName);
     content.put("description", description);
-    Log log = new Log(Constants.SERVICE_NAME, Constants.TYPE_PARSE_FAIL, 
-            System.currentTimeMillis(), content);
-    this.loggerClient.send(log);
+//    Log log = new Log(Constants.SERVICE_NAME, Constants.TYPE_PARSE_FAIL, 
+//            System.currentTimeMillis(), content);
+    //this.loggerClient.send(log);
   }
 }

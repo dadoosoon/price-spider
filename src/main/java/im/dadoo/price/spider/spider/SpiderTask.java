@@ -8,7 +8,6 @@ package im.dadoo.price.spider.spider;
 
 import im.dadoo.log.Log;
 import im.dadoo.log.LogMaker;
-import im.dadoo.logger.client.LoggerClient;
 import im.dadoo.price.core.domain.Link;
 import im.dadoo.price.core.domain.Product;
 import im.dadoo.price.core.domain.Record;
@@ -59,8 +58,8 @@ public class SpiderTask implements Runnable {
   @Resource
   private ParserSelector selector;
   
-  @Resource
-	private LoggerClient loggerClient;
+//  @Resource
+//	private LoggerClient loggerClient;
   
   @Resource
   private ObjectMapper mapper;
@@ -127,7 +126,7 @@ public class SpiderTask implements Runnable {
           logger.error(description);
           e.printStackTrace();
           Log log = LogMaker.makeExceptionLog(Constants.SERVICE_NAME, description, e);
-          this.loggerClient.send(log);
+          //this.loggerClient.send(log);
         } finally {
           try {
             Thread.sleep(seller.getDelay());

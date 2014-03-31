@@ -4,7 +4,7 @@
 
   <groupId>im.dadoo</groupId>
   <artifactId>price-spider</artifactId>
-  <version>0.1.1</version>
+  <version>0.1.2</version>
   <packaging>jar</packaging>
 
   <name>price-spider</name>
@@ -13,6 +13,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
+    <springframework.version>4.0.2.RELEASE</springframework.version>
   </properties>
 
   <dependencies>
@@ -22,11 +23,11 @@
       <version>3.8.1</version>
       <scope>test</scope>
     </dependency>
-    <dependency>
+<!--    <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>logger-client</artifactId>
       <version>0.0.2</version>
-    </dependency>
+    </dependency>-->
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-math3</artifactId>
@@ -40,7 +41,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-aspects</artifactId>
-      <version>3.2.5.RELEASE</version>
+      <version>${springframework.version}</version>
     </dependency>
     <dependency>
       <groupId>ch.qos.logback</groupId>
@@ -70,7 +71,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-web</artifactId>
-      <version>3.2.5.RELEASE</version>
+      <version>${springframework.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
@@ -80,7 +81,17 @@
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>price-core</artifactId>
-      <version>0.1.0</version>
+      <version>0.1.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.jackson</groupId>
+      <artifactId>jackson-core-asl</artifactId>
+      <version>1.9.13</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.jackson</groupId>
+      <artifactId>jackson-mapper-asl</artifactId>
+      <version>1.9.13</version>
     </dependency>
   </dependencies>
   

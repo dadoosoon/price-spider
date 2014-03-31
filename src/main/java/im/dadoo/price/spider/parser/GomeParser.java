@@ -36,7 +36,7 @@ public class GomeParser extends Parser {
           + "shelfCtgy3=%s&"
           + "zoneId=11010000&"
           + "sid=%s&"
-          + "pid=%s&";
+          + "pid=%s";
   
   public GomeParser() {
     super();
@@ -56,9 +56,10 @@ public class GomeParser extends Parser {
     
     String newUrl = String.format(NEW_URL_TPL, goodsNo, siteId, skuType, shelf, sid, pid);
     String fragment = this.getHtml(newUrl);
-		
-    fragment = fragment.substring(6, fragment.length() - 3).trim();
     
+    Integer index1 = fragment.indexOf("{");
+    Integer index2 = fragment.lastIndexOf("}");
+    fragment = fragment.substring(index1, index2 + 1);
     Map<String, String> map = this.mapper.readValue(fragment, Map.class);
     if (map != null) {
       //解析stock

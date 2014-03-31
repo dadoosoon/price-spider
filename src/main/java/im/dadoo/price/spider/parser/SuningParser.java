@@ -39,7 +39,6 @@ public class SuningParser extends Parser{
     Map<String, String> headers = new HashMap<>();
     headers.put("Referer", url);
     String json = StringUtils.deleteWhitespace(this.getHtml(priceUrl, headers));
-    System.out.println(json);
     Map<String, String> map = this.mapper.readValue(json, Map.class);
     if (map != null && map.containsKey("promotionPrice")) {
       fruit.setPrice(this.parsePrice(map.get("promotionPrice")));
@@ -52,7 +51,6 @@ public class SuningParser extends Parser{
       String stockUrl = String.format(STOCK_URL_TPL, pid,
               map.get("salesOrg"), map.get("deptNo"), map.get("vendor"));
       json = StringUtils.deleteWhitespace(this.getHtml(stockUrl));
-      System.out.println(json);
       map = this.mapper.readValue(json, Map.class);
       if (map != null && map.containsKey("productStatus")) {
         String flag = map.get("productStatus");
