@@ -21,7 +21,6 @@ import im.dadoo.price.spider.parser.Parser;
 import im.dadoo.price.spider.util.ParserSelector;
 import java.io.IOException;
 import javax.annotation.Resource;
-import org.apache.http.Consts;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -84,7 +83,7 @@ public class SpiderTask implements Runnable {
     while(true) {
       Link link = this.getLink();
       if (link == null) {
-        logger.warn("获取到的link为null");
+        logger.warn(String.format("获取到的link为null,%s", this.seller.getName()));
         try {
           Thread.sleep(2000);
         } catch (InterruptedException ex) {
@@ -136,9 +135,10 @@ public class SpiderTask implements Runnable {
   private Link getLink() {
     Link link = null;
 
-    RequestConfig config = RequestConfig.custom().setConnectTimeout(Constants.TIME_OUT)
-            .setSocketTimeout(Constants.TIME_OUT).build();
     HttpGet httpGet = new HttpGet(String.format(Constants.MANAGER_URL, this.seller.getId()));
+    RequestConfig config = RequestConfig.custom()
+            .setConnectTimeout(Constants.TIME_OUT)
+            .setSocketTimeout(Constants.TIME_OUT).build();
     httpGet.setConfig(config);
     
 		CloseableHttpResponse res;
@@ -156,17 +156,18 @@ public class SpiderTask implements Runnable {
   
   private Boolean handover(Record record) {
     Boolean success = false;
-    RequestConfig config = RequestConfig.custom().setConnectTimeout(Constants.TIME_OUT)
+    HttpPost httpPost = new HttpPost(String.format(Constants.MANAGER_URL, this.seller.getId()));
+    RequestConfig config = RequestConfig.custom()
+            .setConnectTimeout(Constants.TIME_OUT)
             .setSocketTimeout(Constants.TIME_OUT).build();
-    HttpPost post = new HttpPost(String.format(Constants.MANAGER_URL, this.seller.getId()));
-    post.setConfig(config);
+    httpPost.setConfig(config);
     
 		CloseableHttpResponse res;
     try {
       String json = this.mapper.writeValueAsString(record);
-      post.setEntity(new StringEntity(json));
-      post.setHeader(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
-      res = this.httpClient.execute(post);
+      httpPost.setEntity(new StringEntity(json));
+      httpPost.setHeader(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+      res = this.httpClient.execute(httpPost);
       HttpEntity entity = res.getEntity();
       json = EntityUtils.toString(entity);
       res.close();
