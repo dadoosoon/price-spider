@@ -3,8 +3,6 @@ package im.dadoo.price.spider.parser;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.Resource;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.stereotype.Component;
 
 /*
@@ -19,9 +17,6 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class YintaiParser extends Parser {
-  
-  @Resource
-  private ObjectMapper mapper;
 
   private static final String TAG_PREFIX = "var YinTai_TagData= ";
   private static final String TAG_SUFFIX = "<";

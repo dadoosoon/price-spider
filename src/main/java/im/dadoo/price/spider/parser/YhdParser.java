@@ -2,18 +2,12 @@ package im.dadoo.price.spider.parser;
 
 import java.io.IOException;
 import java.util.Map;
-import javax.annotation.Resource;
-
-import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.stereotype.Component;
 
 @Component
 public class YhdParser extends Parser {
 	
 	private static final String PRICE_URL = "http://busystock.i.yihaodian.com/restful/detail?mcsite=1&provinceId=2&pmId=%s";
-	
-  @Resource
-	private ObjectMapper mapper;
 	
   public YhdParser() {
     super();

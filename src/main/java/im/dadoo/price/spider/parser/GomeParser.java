@@ -1,18 +1,11 @@
 package im.dadoo.price.spider.parser;
 
-
 import java.io.IOException;
 import java.util.Map;
-import javax.annotation.Resource;
-import org.codehaus.jackson.map.ObjectMapper;
-
 import org.springframework.stereotype.Component;
 
 @Component
 public class GomeParser extends Parser {
-	
-  @Resource
-  private ObjectMapper mapper;
 	
   private static final String PID_PREFIX = "prdId:";
 	private static final String SID_PREFIX = "sku:\"";
@@ -42,6 +35,7 @@ public class GomeParser extends Parser {
     super();
   }
   
+  @Override
 	public Fruit parse(String url) throws IOException {
 		Fruit fruit = new Fruit();
     

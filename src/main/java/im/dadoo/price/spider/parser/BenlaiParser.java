@@ -2,18 +2,12 @@ package im.dadoo.price.spider.parser;
 
 import java.io.IOException;
 import java.util.Map;
-import javax.annotation.Resource;
-import org.codehaus.jackson.map.ObjectMapper;
-
 import org.springframework.stereotype.Component;
 
 @Component
 public class BenlaiParser extends Parser{
 
   private static final String REAL_URL_TPL = "http://www.benlai.com/Products/GetProductPrice?SysNo=%s";
-  
-  @Resource
-  private ObjectMapper mapper;
   
   public BenlaiParser() {
     super();
@@ -27,6 +21,7 @@ public class BenlaiParser extends Parser{
     Integer i2 = url.indexOf(".html");
     String pid = url.substring(i1 + 1, i2);
     String json = this.getHtml(String.format(REAL_URL_TPL, pid));
+    logger.debug(json);
     Map<String, Object> map = this.mapper.readValue(json, Map.class);
     if (map != null && map.containsKey("currentPrice")) {
       fruit.setPrice((Double)map.get("currentPrice"));

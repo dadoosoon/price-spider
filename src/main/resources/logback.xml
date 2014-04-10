@@ -1,43 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration>
-  <statusListener class="ch.qos.logback.core.status.OnConsoleStatusListener" />
-  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-    <Encoding>UTF-8</Encoding>
-    <layout class="ch.qos.logback.classic.PatternLayout">  
-      <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符--> 
-      <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} %caller{1} - %msg%n   
-      </pattern>   
-    </layout>
-  </appender>
 
+<configuration>
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">  
+    <encoder>  
+      <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} %caller{1} - %msg%n</pattern>  
+    </encoder>  
+  </appender> 
+  
   <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <Encoding>UTF-8</Encoding>
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-        <!--日志文件输出的文件名-->
-        <FileNamePattern>logs/price/spider/%d{yyyy-MM-dd}.log</FileNamePattern>   
-        <MaxHistory>30</MaxHistory>
-    </rollingPolicy> 
-    <layout class="ch.qos.logback.classic.PatternLayout">  
-      <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符--> 
-      <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} %caller{1} - %msg%n   
-      </pattern>   
-    </layout>
-    <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
-      <MaxFileSize>10MB</MaxFileSize>
-    </triggeringPolicy>   
+      <FileNamePattern>logs/%d{yyyy/MM/dd}.log</FileNamePattern>   
+      <MaxHistory>365</MaxHistory>
+    </rollingPolicy>
+    <encoder>  
+      <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} %caller{1} - %msg%n</pattern>  
+    </encoder>
   </appender>
   
-  <logger name="im.dadoo" level="INFO"/>
-  <!-- show parameters for hibernate sql 专为 Hibernate 定制 --> 
-  <logger name="org" level="ERROR" />
-<!--   <logger name="org.hibernate.type.descriptor.sql.BasicBinder"  level="TRACE" />  
-  <logger name="org.hibernate.type.descriptor.sql.BasicExtractor"  level="DEBUG" />  
-  <logger name="org.hibernate.SQL" level="DEBUG" />  
-  <logger name="org.hibernate.engine.QueryParameters" level="DEBUG" />
-  <logger name="org.hibernate.engine.query.HQLQueryPlan" level="DEBUG" />  -->
-  
-  <root level="ERROR">
+  <logger name="org" level="ERROR">
     <appender-ref ref="STDOUT" />
     <appender-ref ref="FILE" />
-  </root>
-</configuration>   
+  </logger>
+  <logger name="im.dadoo" level="DEBUG">
+    <appender-ref ref="STDOUT" />
+    <appender-ref ref="FILE" />
+  </logger>
+</configuration>

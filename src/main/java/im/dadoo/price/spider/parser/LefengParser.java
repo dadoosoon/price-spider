@@ -8,8 +8,6 @@ package im.dadoo.price.spider.parser;
 
 import java.io.IOException;
 import java.util.Map;
-import javax.annotation.Resource;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -25,9 +23,6 @@ public class LefengParser extends Parser {
   
   private static final String STOCK_URL_TPL = 
           "http://lop.lefeng.com/product/arrtime.jsp?quantity=1&skuIds=%s&countyId=010108";
-  
-  @Resource
-  private ObjectMapper mapper;
   
   public LefengParser() {
     super();

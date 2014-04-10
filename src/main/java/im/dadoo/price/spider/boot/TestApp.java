@@ -27,15 +27,10 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 public class TestApp {
 
 	public static void main(String[] args) throws IOException, InterruptedException {
-//		ApplicationContext ctx = new ClassPathXmlApplicationContext(
-//              new String[]{"dadoo-mq-context.xml",
-//                "logger-client-context.xml", 
-//                "price-spider-context.xml",
-//                "price-core-context.xml"});
     AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(
             PriceCoreContext.class, 
             PriceSpiderContext.class);
-    Parser parser = ctx.getBean(GomeParser.class);
-    System.out.println(parser.parse("http://www.gome.com.cn/product/9124316358.html"));
+    Parser parser = ctx.getBean(BenlaiParser.class);
+    System.out.println(parser.parse("http://www.benlai.com/item-509.html"));
 	}
 }

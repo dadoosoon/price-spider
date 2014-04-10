@@ -1,11 +1,7 @@
 package im.dadoo.price.spider.parser;
 
-
 import java.io.IOException;
 import java.util.Map;
-import javax.annotation.Resource;
-
-import org.codehaus.jackson.map.ObjectMapper;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -17,13 +13,11 @@ public class DangdangParser extends Parser {
 	private static final String STOCK_URL_TPL = 
 			"http://product.dangdang.com/pricestock/callback.php?type=stockv2&product_id=%s";
   
-  @Resource
-  private ObjectMapper mapper;
-  
   public DangdangParser() {
     super();
   }
   
+  @Override
 	public Fruit parse(String url) throws IOException {
 		Fruit fruit = new Fruit();
 		//首先判断是否有货

@@ -1,12 +1,8 @@
 package im.dadoo.price.spider.parser;
 
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.Resource;
-import org.codehaus.jackson.map.ObjectMapper;
-
 import org.springframework.stereotype.Component;
 
 @Component
@@ -21,9 +17,7 @@ public class JdParser extends Parser {
   
   private static final String SUFFIX = "\'";
   
-  @Resource
-  private ObjectMapper mapper;
-  
+  @Override
 	public Fruit parse(String url) throws IOException {
     Fruit fruit = new Fruit();
     
@@ -54,7 +48,6 @@ public class JdParser extends Parser {
       logger.error("url:%s,%s", url, Parser.LOG_PARSE_VALUE_FAIL);
       this.sendFailureLog(url, this.getClass().getSimpleName(), Parser.LOG_PARSE_VALUE_FAIL);
     }
-		
     //解析库存
     String html = this.getHtml(url);
     String skuidKey = this.parsePrefix(html, SKUID_KEY_PREFIX, SUFFIX);

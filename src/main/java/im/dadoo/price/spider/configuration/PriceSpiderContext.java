@@ -6,7 +6,9 @@
 
 package im.dadoo.price.spider.configuration;
 
-import org.codehaus.jackson.map.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import im.dadoo.logger.client.LoggerClient;
+import im.dadoo.logger.client.impl.DefaultLoggerClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -24,5 +26,10 @@ public class PriceSpiderContext {
   @Bean
   public ObjectMapper mapper() {
     return new ObjectMapper();
+  }
+  
+  @Bean
+  public LoggerClient loggerClient() {
+    return new DefaultLoggerClient("http://localhost:8080/logger-server/logger");
   }
 }

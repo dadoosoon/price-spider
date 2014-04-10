@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class Spider {
 
-	private static final Logger logger = LoggerFactory.getLogger(Spider.class);
+	protected static final Logger logger = LoggerFactory.getLogger(Spider.class);
 	
   @Resource
   private SellerService sellerService;

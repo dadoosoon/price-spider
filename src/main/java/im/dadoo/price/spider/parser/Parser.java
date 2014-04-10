@@ -1,24 +1,24 @@
 package im.dadoo.price.spider.parser;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import im.dadoo.log.Log;
+import im.dadoo.logger.client.LoggerClient;
 import im.dadoo.price.core.domain.Record;
 import im.dadoo.price.spider.cons.Constants;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import javax.annotation.Resource;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.config.CookieSpecs;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
-
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public abstract class Parser {
 
@@ -31,11 +31,14 @@ public abstract class Parser {
   
   public static final String LOG_PARSE_STOCK_FAIL = "解析库存失败,可能页面已被修改";
   
-//	@Autowired
-//	protected LoggerClient loggerClient;
-	
-	protected static CloseableHttpClient httpClient;
+  protected static CloseableHttpClient httpClient;
   
+	@Resource
+	protected LoggerClient loggerClient;
+  
+  @Resource
+  protected ObjectMapper mapper;
+	
 	static {
     RequestConfig globalConfig = RequestConfig.custom()
         .setCookieSpec(CookieSpecs.BEST_MATCH)
@@ -54,7 +57,7 @@ public abstract class Parser {
   
   protected String getHtml(String url) throws IOException {
     HttpGet httpGet = new HttpGet(url.trim());
-    
+    httpGet.addHeader("User-Agent", "Chrome/33.0.1750.154 Safari/537.36");
 		CloseableHttpResponse res = Parser.httpClient.execute(httpGet);
 		HttpEntity entity = res.getEntity();
 		String html = EntityUtils.toString(entity);
@@ -67,12 +70,14 @@ public abstract class Parser {
     for (String key : headers.keySet()) {
       httpGet.addHeader(key, headers.get(key));
     }
+    httpGet.addHeader("User-Agent", "Chrome/33.0.1750.154 Safari/537.36");
 		CloseableHttpResponse res = Parser.httpClient.execute(httpGet);
 		HttpEntity entity = res.getEntity();
 		String html = EntityUtils.toString(entity);
     res.close();
     return html;
   }
+  
   protected Double parsePrice(String html) {
     Double price = null;
     try {
@@ -80,8 +85,7 @@ public abstract class Parser {
         price = Double.parseDouble(html.trim());
       }
     } catch(NumberFormatException e) {
-      logger.error("价格解析失败");
-      e.printStackTrace();
+      logger.error("价格解析失败", e);
     }
     return price;
   }
@@ -96,9 +100,9 @@ public abstract class Parser {
 		Map<String, Object> content = new HashMap<>();
 		content.put(Parser.RECORD, record);
 		content.put(Parser.TIME, time);
-//		Log log = new Log(Constants.SERVICE_NAME, 
-//				Constants.TYPE_EXTRACTION, System.currentTimeMillis(), content);
-		//this.loggerClient.send(log);
+		Log log = new Log(Constants.SERVICE_NAME, 
+				Constants.TYPE_EXTRACTION, System.currentTimeMillis(), content);
+		this.loggerClient.send(log);
 	}
   
   public void sendFailureLog(String url, String parserName, String description) {
@@ -106,8 +110,8 @@ public abstract class Parser {
     content.put("url", url);
     content.put("parserName", parserName);
     content.put("description", description);
-//    Log log = new Log(Constants.SERVICE_NAME, Constants.TYPE_PARSE_FAIL, 
-//            System.currentTimeMillis(), content);
-    //this.loggerClient.send(log);
+    Log log = new Log(Constants.SERVICE_NAME, Constants.TYPE_PARSE_FAIL, 
+            System.currentTimeMillis(), content);
+    this.loggerClient.send(log);
   }
 }

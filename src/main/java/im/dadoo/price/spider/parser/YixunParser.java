@@ -2,13 +2,9 @@ package im.dadoo.price.spider.parser;
 
 import im.dadoo.price.spider.cons.Constants;
 import java.io.IOException;
-
-
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -18,6 +14,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class YixunParser extends Parser {
 	
+  @Override
 	public Fruit parse(String url) throws IOException {
 		Document doc = Jsoup.connect(url).userAgent("").cookie("wsid", "2001")
             .timeout(Constants.TIME_OUT).get();

@@ -15,6 +15,13 @@ public class AmazonCnParser extends Parser {
     super();
   }
   
+  /**
+   *
+   * @param url
+   * @return
+   * @throws IOException
+   */
+  @Override
 	public Fruit parse(String url) throws IOException {
     Fruit fruit = new Fruit();
     
