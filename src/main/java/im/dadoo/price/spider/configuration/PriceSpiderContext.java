@@ -30,6 +30,6 @@ public class PriceSpiderContext {
   
   @Bean
   public LoggerClient loggerClient() {
-    return new DefaultLoggerClient("http://localhost:8080/logger-server/logger");
+    return new DefaultLoggerClient("http://log.dadoo.im/logger");
   }
 }
