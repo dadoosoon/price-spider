@@ -25,6 +25,7 @@ public class JdParser extends Parser {
 		String[] st = url.split("/");
 		String pid = st[st.length - 1].split("\\.")[0];
     String json = this.getHtml(String.format(PRICE_URL, pid));
+    System.out.println(json);
     if (json != null) {
       List<Map<String, Object>> list = this.mapper.readValue(json, List.class);
       if (list != null && !list.isEmpty()) {

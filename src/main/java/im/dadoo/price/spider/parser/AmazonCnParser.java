@@ -29,7 +29,8 @@ public class AmazonCnParser extends Parser {
     String html = this.getHtml(url);
     Document doc = Jsoup.parse(html);
 		Elements es = doc.select("#actualPriceValue .priceLarge");
-		if (es.first() != null) {
+    //System.out.println(doc.toString());
+		if (es.size() > 0) {
 			String fragment = es.first().text();
 			if (fragment != null && !fragment.equals("")) {
         Double value = this.parsePrice(fragment.substring(2));
@@ -37,13 +38,24 @@ public class AmazonCnParser extends Parser {
         fruit.setStock(1);
 			}
 		} else {
-			es = doc.select(".ddm-sbr-avail-title");
-			if (es.text() != null && es.text().equals("缺货登记")) {
-        fruit.setPrice(null);
-				fruit.setStock(0);
-			} else {
-        logger.error(String.format("url:%s,%s", url, Parser.LOG_PARSE_STOCK_FAIL));
-        this.sendFailureLog(url, this.getClass().getSimpleName(), Parser.LOG_PARSE_STOCK_FAIL);
+      es = doc.select("#priceblock_ourprice");
+      System.out.println(es.toString());
+      if (es.size() > 0) {
+        String fragment = es.first().text();
+        if (fragment != null && !fragment.equals("")) {
+          Double value = this.parsePrice(fragment.substring(1));
+          fruit.setPrice(value);
+          fruit.setStock(1);
+        }
+      } else {
+        es = doc.select(".ddm-sbr-avail-title");
+        if (es.text() != null && es.text().equals("缺货登记")) {
+          fruit.setPrice(null);
+          fruit.setStock(0);
+        } else {
+          logger.error(String.format("url:%s,%s", url, Parser.LOG_PARSE_STOCK_FAIL));
+          this.sendFailureLog(url, this.getClass().getSimpleName(), Parser.LOG_PARSE_STOCK_FAIL);
+        }
       }
 		}
 		return fruit;

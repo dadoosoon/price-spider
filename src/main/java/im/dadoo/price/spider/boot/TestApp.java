@@ -30,7 +30,7 @@ public class TestApp {
     AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(
             PriceCoreContext.class, 
             PriceSpiderContext.class);
-    Parser parser = ctx.getBean(TootooParser.class);
-    System.out.println(parser.parse("http://www.tootoo.cn/product-1035983.html"));
+    Parser parser = ctx.getBean(AmazonCnParser.class);
+    System.out.println(parser.parse("http://www.amazon.cn/dp/B00IK8R4CQ"));
 	}
 }
