@@ -57,7 +57,7 @@ public abstract class Parser {
   
   protected String getHtml(String url) throws IOException {
     HttpGet httpGet = new HttpGet(url.trim());
-    httpGet.addHeader("User-Agent", "Chrome/33.0.1750.154 Safari/537.36");
+    httpGet.addHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/34.0.1847.131 Safari/537.36");
 		CloseableHttpResponse res = Parser.httpClient.execute(httpGet);
 		HttpEntity entity = res.getEntity();
 		String html = EntityUtils.toString(entity);

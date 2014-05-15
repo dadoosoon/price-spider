@@ -15,7 +15,7 @@ public class WomaiParser extends Parser {
 	public Fruit parse(String url) throws IOException {
 		Fruit fruit = new Fruit();
 		Integer endIndex = url.indexOf(".htm");
-		Integer beginIndex = endIndex - 6;
+		Integer beginIndex = url.lastIndexOf("-") + 1;
 		String ids = url.substring(beginIndex, endIndex);
     String json = this.getHtml(String.format(URL, ids));
 		//首先判断是否有货
@@ -24,7 +24,7 @@ public class WomaiParser extends Parser {
 		} else if (json.indexOf("\"sellable\":false") > -1){
 			fruit.setStock(0);
 		} else {
-			logger.error("url:%s,%s", url, Parser.LOG_PARSE_STOCK_FAIL);
+			logger.error(String.format("url:%s,%s", url, Parser.LOG_PARSE_STOCK_FAIL));
       this.sendFailureLog(url, this.getClass().getSimpleName(), Parser.LOG_PARSE_STOCK_FAIL);
 		}
 
@@ -33,7 +33,7 @@ public class WomaiParser extends Parser {
       Double value = this.parsePrice(result);
       fruit.setPrice(value);  
     } else {
-      logger.error("url:%s,%s", url, Parser.LOG_PARSE_VALUE_FAIL);
+      logger.error(String.format("url:%s,%s", url, Parser.LOG_PARSE_VALUE_FAIL));
       this.sendFailureLog(url, this.getClass().getSimpleName(), Parser.LOG_PARSE_VALUE_FAIL);
     }
 		return fruit;
