@@ -14,7 +14,7 @@ import im.dadoo.price.core.domain.Link;
 import im.dadoo.price.core.domain.Product;
 import im.dadoo.price.core.domain.Record;
 import im.dadoo.price.core.domain.Seller;
-import im.dadoo.price.core.service.ProductService;
+import im.dadoo.price.core.domain.util.Pair;
 import im.dadoo.price.spider.cons.Constants;
 import im.dadoo.price.spider.parser.Fruit;
 import im.dadoo.price.spider.parser.Parser;
@@ -62,9 +62,6 @@ public class SpiderTask implements Runnable {
   @Resource
   private ObjectMapper mapper;
   
-  @Resource
-  private ProductService productService;
-  
   public SpiderTask() {
   }
   
@@ -81,8 +78,8 @@ public class SpiderTask implements Runnable {
     Long storeEndTime = null;
     
     while(true) {
-      Link link = this.getLink();
-      if (link == null) {
+      Pair<Link, Product> pair = this.getLink();
+      if (pair == null) {
         logger.warn(String.format("获取到的link为null,%s", this.seller.getName()));
         try {
           Thread.sleep(2000);
@@ -90,25 +87,24 @@ public class SpiderTask implements Runnable {
           logger.error("线程等待失败", ex);
         }
       } else {
-        Product product = this.productService.findById(link.getProductId());
         try {
           if (parser != null) {
-            logger.info(String.format("开始采集%s网站数据,商品名%s,总量%d,url为%s", 
-              this.seller.getName(), product.getName(), link.getAmount(), link.getUrl()));
+            logger.info(String.format("开始采集%s网站数据,商品名为%s,总量%d,url为%s", 
+              this.seller.getName(), pair.getR().getName(), pair.getL().getAmount(), pair.getL().getUrl()));
             beginTime = System.currentTimeMillis();
-            Fruit fruit = this.parser.parse(link.getUrl());
+            Fruit fruit = this.parser.parse(pair.getL().getUrl());
             parseEndTime = System.currentTimeMillis();
             if (fruit != null) {
               Double price = null;
               if (fruit.getPrice() != null) {
-                price = fruit.getPrice() / link.getAmount();
+                price = fruit.getPrice() / pair.getL().getAmount();
               }
-              Record record = Record.create(price, fruit.getStock(), null, link.getId(), parseEndTime);
+              Record record = Record.create(price, fruit.getStock(), null, pair.getL().getId(), parseEndTime);
               Boolean success = this.handover(record);
               storeEndTime = System.currentTimeMillis();
               if (success) {
                 logger.info(String.format("采集%s网站成功,商品名为%s,单价为%2.2f,库存状况%d,促销信息%s,采集耗时%d毫秒,存储耗时%d毫秒", 
-                  this.seller.getName(), product.getName(), price, fruit.getStock(), null, 
+                  this.seller.getName(), pair.getR().getName(), price, fruit.getStock(), null, 
                   parseEndTime - beginTime, storeEndTime - parseEndTime));
                 parser.sendExtractionLog(record, storeEndTime - parseEndTime);
               } else {
@@ -119,7 +115,7 @@ public class SpiderTask implements Runnable {
         } catch(Exception e) {
           storeEndTime = System.currentTimeMillis();
           String description = String.format("采集%s网站结束,商品名为%s,url为%s,价格解析失败,共耗时%d毫秒", 
-              this.seller.getName(), product.getName(), link.getUrl(), storeEndTime - beginTime);
+              this.seller.getName(), pair.getR().getName(), pair.getL().getUrl(), storeEndTime - beginTime);
           logger.error(description, e);
           Log log = LogMaker.makeExceptionLog(Constants.SERVICE_NAME, description, e);
           this.loggerClient.send(log);
@@ -132,9 +128,8 @@ public class SpiderTask implements Runnable {
     }
   }
   
-  private Link getLink() {
-    Link link = null;
-
+  private Pair<Link, Product> getLink() {
+    Pair<Link, Product> pair = null;
     HttpGet httpGet = new HttpGet(String.format(Constants.MANAGER_URL, this.seller.getId()));
     RequestConfig config = RequestConfig.custom()
             .setConnectTimeout(Constants.TIME_OUT)
@@ -147,11 +142,12 @@ public class SpiderTask implements Runnable {
       HttpEntity entity = res.getEntity();
       String json = EntityUtils.toString(entity);
       res.close();
-      link = this.mapper.readValue(json, Link.class);
+      pair = this.mapper.readValue(json, this.mapper.getTypeFactory()
+              .constructParametricType(Pair.class, Link.class, Product.class));
     } catch (IOException e) {
       logger.error(String.format("获取link失败,%s", this.seller.getName()), e);
     }
-		return link;
+		return pair;
   }
   
   private Boolean handover(Record record) {

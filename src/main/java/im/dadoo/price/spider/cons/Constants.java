@@ -15,4 +15,6 @@ public final class Constants {
   public static final String MANAGER_URL = "http://price.spider.manager.dadoo.im/seller/%d";
   
   //public static final String MANAGER_URL = "http://localhost:8084/price-spider-manager/seller/%d";
+  
+  public static final String LIST_SELLERS_URL = "http://price.spider.manager.dadoo.im/sellers";
 }

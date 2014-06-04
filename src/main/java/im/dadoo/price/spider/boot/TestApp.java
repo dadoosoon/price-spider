@@ -1,7 +1,5 @@
 package im.dadoo.price.spider.boot;
 
-
-import im.dadoo.price.core.configuration.PriceCoreContext;
 import im.dadoo.price.spider.configuration.PriceSpiderContext;
 import im.dadoo.price.spider.cons.Constants;
 import im.dadoo.price.spider.parser.AmazonCnParser;
@@ -27,9 +25,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 public class TestApp {
 
 	public static void main(String[] args) throws IOException, InterruptedException {
-    AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(
-            PriceCoreContext.class, 
-            PriceSpiderContext.class);
+    AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(PriceSpiderContext.class);
     Parser parser = ctx.getBean(WomaiParser.class);
     System.out.println(parser.parse("http://www.womai.com/Product-0-297575.htm"));
 	}

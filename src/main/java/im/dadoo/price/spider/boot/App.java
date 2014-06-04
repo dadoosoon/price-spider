@@ -1,6 +1,5 @@
 package im.dadoo.price.spider.boot;
 
-import im.dadoo.price.core.configuration.PriceCoreContext;
 import im.dadoo.price.spider.configuration.PriceSpiderContext;
 import im.dadoo.price.spider.spider.Spider;
 import java.io.IOException;
@@ -15,8 +14,8 @@ public class App {
   
   public static void main(String[] args) throws IOException {
   	
-    AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(
-            PriceCoreContext.class, PriceSpiderContext.class);
+    AnnotationConfigApplicationContext ctx = 
+            new AnnotationConfigApplicationContext(PriceSpiderContext.class);
     final Spider spider = (Spider) ctx.getBean("spider");
     spider.start(ctx);
   }
